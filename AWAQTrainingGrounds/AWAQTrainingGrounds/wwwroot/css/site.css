@@ -29,3 +29,69 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+
+/* 
+#365f33 verde Fuerte
+#496d47     A
+#5b7d5a     |
+#6f8c6d     |
+#839b81     |
+#96ac95     |
+#abbca9     |
+#bfcdbe     |
+#d3ddd4     |
+#e9eee8 blanco verdoso
+*/
+
+
+.CuerpoPanelAdmninistrador{
+  background-color: #e9eee8;
+}
+
+.SeccionResumen{
+  background-color: #96ac95;
+  border-radius: 20px;
+  box-shadow: 2px 2px 6px #6f8c6daf;
+}
+
+.CajaResumen{
+  background-color: #e9eee8;
+  border-radius: 20px;
+}
+
+.CajaTabla{
+  background-color: #bfcdbe; 
+}
+
+.BarraTabla{
+  background-color: #e9eee8;
+}
+
+.BarraProgreso{
+  background-color: #365f33;
+}
+
+p{
+margin-bottom: 0px;
+}
+
+.btn-primary{
+  background-color: #365f33;
+  border-color: #365f33;
+}
+
+.btn-primary:hover{
+  background-color: #bfcdbe;
+  border-color: #bfcdbe;
+  color: black;
+}
+
+.form-control{
+  background-color: #e9eee8;
+}
+
+.form-control:focus{
+  border-color: #365f33;
+  box-shadow: 0 0 5px #365f33;
+}
