@@ -1,0 +1,186 @@
+@model AdminPanelViewModel
+
+<body class="CuerpoPanelAdmninistrador">
+    
+    <section class="p-4 rounded SeccionResumen">
+        <div class="row">
+            <div class="col-md-4 ">
+                <div class="p-3 text-center CajaResumen ">
+                    <h4> <strong>Total de Usuarios:</strong> @Model.TotalUsuarios</h3>
+                </div>
+            </div>
+
+            <div class="col-md-4 ">
+                <div class="p-3 text-center  CajaResumen">
+                    <h4> <strong>Promedio Monedas:</strong> @Model.PromedioMonedas</h4>
+                </div>
+            </div>
+
+            <div class="col-md-4 ">
+                <div class="p-3 text-center  CajaResumen">
+                    <h4> <strong>Promedio Progreso:</strong> @Model.PromedioProgreso %</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="p-5 rounded SeccionResumen mt-5">
+
+        <div class="col-md-12 p-3 rounded text-center CajaTabla">
+
+            <div class="d-flex justify-content-left align-items-center gap-2">
+                <img src="~/Images/Lupa.png" width="30" height="30">
+
+                <form asp-controller="Admin" asp-action="Panel" method="get" class="w-50">
+                    <input type="text" 
+                        name="busqueda"
+                        class="form-control rounded-pill"
+                        placeholder="Buscar usuario o país...">
+                </form>
+
+                <a asp-controller="Admin"asp-action="Panel" class="btn btn-primary">
+                    Borrar filtros
+                </a>
+                
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-12 p-3 rounded text-center CajaTabla mt-4">
+
+
+
+            <div class="col-md-12 p-2 rounded text-center BarraTabla mb-2">
+
+                <div class="row text-center">
+
+                    <div class="col-md-3">
+                        <p> <strong> Nombre </strong> </p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p> <strong> Correo </strong> </p>
+                    </div>
+
+
+                    <div class="col-md-1">
+                        <p> <strong> País </strong> </p>
+                    </div>
+
+                    <div class="col-md-1">
+                        <p> <strong> Monedas </strong> </p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <p> <strong> Progreso </strong> </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <div class="col-md-12 p-2 rounded text-center">
+
+                    <div class="row text-center BarraTabla rounded p-1 align-items-center">
+
+                        <div class="col-md-3">
+                            <p>@usuario.Nombre</p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <p>@usuario.Correo</p>
+                        </div>
+
+
+                        <div class="col-md-1">
+                            <p>@usuario.País</p>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div style="width:30px;">
+                                    <img src="~/Images/Moneda.png" width="22">
+                                </div>
+
+                                <div style="width:40px; text-align:left;">
+                                    <span>@usuario.Monedas</span>
+                                </div>
+                            </div>  
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="progress">
+                                <div class="progress-bar BarraProgreso"
+                                    role="progressbar"
+                                    style="width: @usuario.Progreso%;">
+                                    @usuario.Progreso%
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <a asp-controller="Admin" asp-action="Perfil" class="btn btn-primary btn-sm">
+                                Ver perfil
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+
+
+
+            <div class="row text-center mt-4">
+
+                <div class="col-md-6 d-flex justify-content-start">
+                    <p> <strong> Mostrando Página @Model.PaginaActual de @Model.TotalPaginas </strong> </p>
+                </div>
+
+
+                <div class=" col-md-6 d-flex justify-content-end gap-2">
+
+     
+                    @if (Model.PaginaActual > 1)
+                    {
+                        <a asp-controller="Admin"
+                        asp-action="Panel"
+                        asp-route-pagina="@(Model.PaginaActual - 1)"
+                        class="btn btn-primary">
+                            Anterior
+                        </a>
+                    }
+
+
+                    @if (Model.PaginaActual < Model.TotalPaginas)
+                    {
+                        <a asp-controller="Admin"
+                        asp-action="Panel"
+                        asp-route-pagina="@(Model.PaginaActual + 1)"
+                        class="btn btn-primary">
+                            Siguiente
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+            
+
+        </div>
+
+    </section>
+
+</body>
