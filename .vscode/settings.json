@@ -1,0 +1,4 @@
+{
+    "dotnet.defaultSolution": "MVC_AWAQ.sln",
+    "git.ignoreLimitWarning": true
+}
