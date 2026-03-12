@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AWAQTrainingGrounds.Models;
-using MVC_AWAQ.Models;
+using System.Linq; 
 
 namespace AWAQTrainingGrounds.Controllers;
 
@@ -19,17 +19,12 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Daniel()
-    {
-        return View();
-    }
-
     public IActionResult Privacy()
     {
         return View();
     }
 
-       // Empieza lo de Andrea - Sistema de gastar los puntos.
+    // Empieza lo de Andrea - Sistema de gastar los puntos.
 
     private static int puntos_eco = 1000;
     private static string ropa_puesta = "~/images/girlwhite.png";
@@ -79,6 +74,26 @@ public IActionResult Comprar(string GastarPuntos)
             if (objetoSeleccionado.IDObjecto == "1")
             {
                 ropa_puesta = "~/images/girlred.png";
+            }
+            else if (objetoSeleccionado.IDObjecto == "2")
+            {
+                ropa_puesta = "~/images/girlorange.png";
+            }
+            else if (objetoSeleccionado.IDObjecto == "3")
+            {
+                ropa_puesta = "~/images/girlyellow.png";
+            }
+            else if (objetoSeleccionado.IDObjecto == "4")
+            {
+                ropa_puesta = "~/images/girlgreen.png";
+            }
+            else if (objetoSeleccionado.IDObjecto == "5")
+            {
+                ropa_puesta = "~/images/girlblue.png";
+            }
+            else if (objetoSeleccionado.IDObjecto == "6")
+            {
+                ropa_puesta = "~/images/girlpurple.png";
             }
         }
     }

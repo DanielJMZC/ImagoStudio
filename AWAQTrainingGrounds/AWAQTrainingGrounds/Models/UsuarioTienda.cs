@@ -1,4 +1,4 @@
-namespace MVC_AWAQ.Models
+namespace AWAQTrainingGrounds.Models
 {
     public class UsuarioTienda
     {

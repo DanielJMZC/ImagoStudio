@@ -1,101 +1,149 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 
+body{
+    background-color:#f2f2f2;
+}
 
 .tienda_wrapper {
     display:flex;
     flex-direction: column;
     justify-content:center;
     align-items: center;
-    /* background-color: red; */
 }
 
-.contenedor {
-    width: 1050px;
-    max-width: 95vw;
-    text-align: center;
-    padding: 30px;
-    border-radius: 20px;
-    margin-bottom: 50px;
-    /* background-color: aqua; */
-    background-color: #d8e8d7;
-}
+/* HEADER */
 
 .tienda_wrapper header {
     width: 950px;
     max-width: 95vw;
-    margin-top: 100px;
-    margin-bottom: 10px;
+    margin-top: 80px;
+    margin-bottom: 20px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    padding: 15px 20px;
-    /* background-color: powderblue; */
-    border-radius: 20px;
+    padding: 10px 10px;
+}
+
+.titulo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #476c44;
 }
 
 .eco_points {
     background-color: #476c44;
     color: white;
-    padding: 8px 16px;
-    border-radius: 10px;
+    padding: 8px 18px;
+    border-radius: 12px;
     font-weight: bold;
 }
 
-.titulo {
-    font-size: 26px;
-    font-weight: bolder;
-    color: #476c44;
-}
+/* CONTENEDOR VERDE */
 
-.tienda_layout {
-    display: flex;
-    gap: 20px;
-    align-items: stretch;
-}
-
-.lista_objetos {
-    flex: 3;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
+.contenedor {
+    width: 1050px;
+    max-width: 95vw;
+    padding: 30px;
     border-radius: 20px;
-    /* background-color: blueviolet; */
+    margin-bottom: 50px;
     background-color: #d8e8d7;
 }
 
-.lista_objetos .objeto {
-    /* background-color: violet; */
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
+/* LAYOUT GENERAL */
+
+.tienda_layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
 }
 
-.lista_objetos .objeto img{
-    width: 90%;
-}
-.personaje img {
-    width: 90%;
+/* GRID DE OBJETOS */
+
+.lista_objetos {
+    flex: 3;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 
-.lista_objetos .objeto button {
-    background-color: #476c44;
-    font-weight: bolder;
-    padding: 4px 4px;
-    border-radius: 8px;
-    outline: none;
-    border: none;
-    color: white;
+/* CONTENEDOR DE CADA OBJETO */
+
+.objeto{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
 }
+
+/* CUADRO BLANCO DEL ITEM */
+
+.item_card{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    width:130px;
+    height:130px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+/* IMAGEN ITEM */
+
+.item_card img{
+    width:70px;
+}
+
+/* PRECIO */
+
+.precio{
+    margin-top:6px;
+    font-weight:bold;
+    color:#444;
+}
+
+/* BOTON COMPRAR */
+
+.boton_comprar{
+    background:#476c44;
+    color:white;
+    border:none;
+    padding:6px 16px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.boton_comprar:hover{
+    background:#3c5d3a;
+}
+
+/* PANEL PERSONAJE */
+
 .personaje {
     flex:1;
-    min-width:300px;
-    /* background-color: orange; */
+    min-width:260px;
+
     background-color: white;
     border-radius:20px;
+
     padding:20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* IMAGEN PERSONAJE */
+
+.personaje img {
+    width:170px;
 }
