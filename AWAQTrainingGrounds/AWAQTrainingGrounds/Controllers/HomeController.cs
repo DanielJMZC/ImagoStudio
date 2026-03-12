@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AWAQTrainingGrounds.Models;
+using MVC_AWAQ.Models;
 
 namespace AWAQTrainingGrounds.Controllers;
 
