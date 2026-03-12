@@ -1,0 +1,51 @@
+@model MVC_AWAQ.Models.UsuarioTienda
+
+<link rel="stylesheet" href="~/css/style.css"/>
+<div class="tienda_wrapper">
+    <header>
+        <div class="titulo">Tienda de accesorios</div>
+        <div class="eco_points">$ @Model.PuntosActuales</div>
+    </header>
+    <div class = "contenedor">
+        <form asp-action="Comprar" method="post">
+            <div class = "tienda_layout">
+                <div class ="lista_objetos">
+
+                    <div class="objeto">
+                        <img src="~/images/redshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="1">$ 80  </button>
+                    </div>
+
+                    <div class="objeto">
+                        <img src="~/images/orangeshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="2">$ 100 </button>
+                    </div>
+
+                    <div class="objeto">
+                        <img src="~/images/yellowshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="3">$ 150 </button>
+                    </div>
+
+                    <div class="objeto">
+                        <img src="~/images/greenshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="4">$ 200 </button>
+                    </div>
+
+                    <div class="objeto">
+                        <img src="~/images/blueshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="5">$ 250 </button>
+                    </div>
+
+                    <div class="objeto">
+                        <img src="~/images/purpleshirtemma.png">
+                        <button class="boton_comprar" name="GastarPuntos" value="6">$ 300 </button>
+                    </div>
+                    
+                </div>
+                <div class  = "personaje">
+                    <img src = "~/images/girlwhite.png">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
