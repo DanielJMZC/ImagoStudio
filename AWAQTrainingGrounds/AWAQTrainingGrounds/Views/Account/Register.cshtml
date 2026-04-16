@@ -1,0 +1,77 @@
+@model Users
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/account.css"/>
+
+    </head>
+    <body class="register-page">
+        <section class = "MainBody">
+            <h1>Crear Cuenta</h1>
+            <br />
+            <form method= "post" class = "needs-validation content" novalidate>
+                <div class="mb-3">
+                    <label for="registerName" class="form-label my-form">Nombre</label>
+                    <input type="text" id="registerName" class="form-control" name="nombre" required>
+                    <div class="invalid-feedback" id = "name-error">
+                        Debes ingresar un nombre.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="registerEmail" class="form-label my-form">Correo</label>
+                    <input type="email" id="registerEmail" class="form-control" name="correo" required>
+                    <div class="invalid-feedback d-block" id = "email-error">
+                        @if (ViewData.ModelState["correo"]?.Errors.Count > 0)
+                        {
+                             @Html.ValidationMessageFor(m => m.correo)
+                        }
+                    </div>
+                    
+                </div>
+                <div class="mb-3">
+                    <label for="registerPassword" class="form-label my-form">Contraseña</label>
+                    
+                    <input type="password" class="form-control" id="registerPassword" name="encrypted_password" required>
+                    @*
+                    <div id="passwordHelpBlock" class="form-text">
+                        La contraseña debe tener al menos 5 caracteres.
+                    </div>
+                    *@
+                    <div class="invalid-feedback" id = "password-error">
+                        Debes ingresar una contraseña.
+                    </div>
+                </div>
+                 <div class="mb-3">
+                    <label for="registerConfirmPassword" class="form-label my-form">Confirmar Contraseña</label>
+                    
+                    <input type="password" class="form-control" id="registerConfirmPassword" required>
+                    <div class="invalid-feedback" id = "confirmPassword-error">
+                        Debes ingresar una contraseña.
+                    </div>
+                </div>
+                <br />
+                <div class="d-grid gap-2 col-10 mx-auto">
+                    <button class="btn btn-primary my-submit-button" type="submit">Registrar</button>
+                </div>
+            </form>
+            <script src="~/js/registerValidation.js"></script>
+        </section>
+        <section class = "SideBody">
+            <h1>¡Hola de nuevo!</h1>
+            <h2>La aventura continúa aquí</h2>
+            <br />
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light my-btn">
+                Iniciar Sesión
+            </a>
+
+        </section>   
+    </body>
+</html>

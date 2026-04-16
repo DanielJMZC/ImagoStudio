@@ -1,0 +1,134 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    grid-template-areas: "side main";
+    margin: 0px;
+    padding: 0px;
+}
+
+body.register-page {
+    grid-template-columns: 1.1fr 1fr;
+    grid-template-areas: "main side";
+}
+
+.my-btn {
+    width: 250px;
+}
+
+.my-form {
+    width: 330px;
+}
+
+.my-submit-button {
+    background-color: #6F8C6D;
+}
+
+.MainBody {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    color: #111111;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    grid-area: main;
+
+}
+
+
+.SideBody {
+    background-color: #6F8C6D;
+    display: flex;
+    flex-direction: column;
+    color: #EEEEEE;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /*Vh is for screen height*/
+    grid-area: side;
+
+}
+
+.content
+{
+    width: 350px;
+}
+
+.phoneID
+{
+    flex: 1 !important;
+}
+
+.phoneNumber
+{
+    flex: 5 !important;
+}
+
+.day
+{
+    flex: 2 !important;
+}
+
+.month
+{
+    flex: 4 !important;
+}
+
+.year
+{
+    flex: 2.9 !important;
+}
+
+.my-radio
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+
+    width: 104px !important;
+    height: 104px !important;
+}
+
+.my-modal
+{
+    background-color: #6F8C6D !important;
+    color: #EEEEEE !important;
+}
+
+.modal-form
+{
+    display: grid;
+    grid-template-columns: repeat(4, 96px);
+    gap: 10px;
+
+    justify-content: center;
+    justify-items: center;
+ 
+}
+
+
+
+.my-radio img,label
+{
+    display: block;
+}
+
+.my-modal-container
+{
+    border-width: 0px !important;
+}
+
+
+.my-input:checked + .my-radio {
+    border-color: #839B81;
+    border-width: 2px;
+}
+
+h1 {
+    margin: 0px;
+    font-size: 40px;
+}
+h2 {
+    margin: 0px;
+    font-size: 20px;
+}
