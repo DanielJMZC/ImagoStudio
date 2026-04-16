@@ -25,10 +25,27 @@
                     <label for="country" class="form-label my-form">País</label>
                     <select class = "form-select" id="country" name = "country_id" required>
                         <option value="" disabled selected>Selecciona un páis</option>
-                        <option value= "1">Mexico</option>
-                        <option value = "2">United Kingdom</option>
-                        <option value = "3">United States</option>
-                        <option value = "4">Spain</option>
+                        <option value="1">🇦🇷 Argentina</option>
+                        <option value="2">🇦🇺 Australia</option>
+                        <option value="3">🇧🇷 Brazil</option>
+                        <option value="4">🇨🇦 Canada</option>
+                        <option value="5">🇨🇳 China</option>
+                        <option value="6">🇫🇷 France</option>
+                        <option value="7">🇩🇪 Germany</option>
+                        <option value="8">🇮🇳 India</option>
+                        <option value="9">🇮🇹 Italy</option>
+                        <option value="10">🇯🇵 Japan</option>
+                        <option value="11">🇲🇽 Mexico</option>
+                        <option value="12">🇳🇱 Netherlands</option>
+                        <option value="13">🇳🇬 Nigeria</option>
+                        <option value="14">🇷🇺 Russia</option>
+                        <option value="15">🇿🇦 South Africa</option>
+                        <option value="16">🇰🇷 South Korea</option>
+                        <option value="17">🇪🇸 Spain</option>
+                        <option value="18">🇬🇧 United Kingdom</option>
+                        <option value="19">🇺🇸 United States</option>
+                        <option value="20">🇻🇳 Vietnam</option>
+                        
                     </select>
                     <div class="invalid-feedback" id = "country-error">
                         Selecciona un país de la lista.
@@ -37,12 +54,29 @@
                 <div class = "mb-3">
                     <label for="phoneNumber" class="form-label my-form">Teléfono</label>
                     <div class = "input-group has-validation">
-                        <select class = "form-select phoneID" id="phoneNumber" name = "telefono_prefix"required>
+                        <select class = "form-select phoneID" id="phoneNumber" name = "telefono_prefix" required>
                             <option value="" disabled selected></option>
-                            <option>+52</option>
-                            <option>+112</option>
-                            <option>+998</option>
-                            <option>+53</option>
+                         
+                        <option value="+54">🇦🇷 +54</option>
+                        <option value="+61">🇦🇺 +61</option>
+                        <option value="+55">🇧🇷 +55</option>
+                        <option value="+1">🇨🇦 +1</option>
+                        <option value="+86">🇨🇳 +86</option>
+                        <option value="+33">🇫🇷 +33</option>
+                        <option value="+49">🇩🇪 +49</option>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+39">🇮🇹 +39</option>
+                        <option value="+81">🇯🇵 +81</option>
+                        <option value="+52">🇲🇽 +52</option>
+                        <option value="+31">🇳🇱 +31</option>
+                        <option value="+234">🇳🇬 +234</option>
+                        <option value="+7">🇷🇺 +7</option>
+                        <option value="+27">🇿🇦 +27</option>
+                        <option value="+82">🇰🇷 +82</option>
+                        <option value="+34">🇪🇸 +34</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+84">🇻🇳 +84</option>
                         </select>
                         <input type="number" class="form-control phoneNumber" id = "phoneNumber2" name = "telefono"  aria-label="Número de Télefono" required>
                         <div class="invalid-feedback" id = "phone-error">
@@ -85,13 +119,13 @@
                 <input type="hidden" name="cosmetic_id" id = "profileInput" value="2">
                 <br />
                 <div class="d-grid gap-2 col-10 mx-auto">
-                    <button class="btn btn-primary my-submit-button" type="submit">Registrar</button>
+                    <button class="btn btn-primary my-submit-button" type="submit">Completar</button>
                 </div>
             </form>
         </section>
         <section class = "SideBody">
             <div class = "mb-3">
-                <img src="~/Images/Account/avatar2.jpg" class = "rounded-circle" id = "profile" width="192" height="192">
+                <img src="~/Images/Account/Avatar2.png" class = "rounded-circle" id = "profile" width="192" height="192">
             </div>
             <br />
             <button class="btn btn-outline-light my-btn" type="button" data-bs-toggle="modal" data-bs-target="#profileModal">Editar Perfil</button>
@@ -107,13 +141,25 @@
                     <div class="modal-body">
                         <input type="radio" class="btn-check my-input" value="2" name="cosmetic" id="option1" autocomplete="off" checked>
                         <label class = "btn rounded-circle my-radio" for = "option1">
-                            <img src="~/Images/Account/avatar2.jpg" class = "rounded-circle" width="96" height= "96">
+                            <img src="~/Images/Account/Avatar2.png" class = "rounded-circle" width="96" height= "96">
                         </label>
 
                         <input type="radio" class="btn-check my-input" value="3" name = "cosmetic" id="option2" autocomplete="off">
 
                         <label class = "btn rounded-circle my-radio" for = "option2">
-                        <img src="~/Images/Account/avatar3.jpg" class = "rounded-circle" width="96" height= "96">
+                        <img src="~/Images/Account/Avatar3.png" class = "rounded-circle" width="96" height= "96">
+                        </label>
+
+                        <input type="radio" class="btn-check my-input" value="4" name = "cosmetic" id="option3" autocomplete="off">
+
+                        <label class = "btn rounded-circle my-radio" for = "option3">
+                        <img src="~/Images/Account/Avatar4.png" class = "rounded-circle" width="96" height= "96">
+                        </label>
+
+                        <input type="radio" class="btn-check my-input" value="5" name = "cosmetic" id="option4" autocomplete="off">
+
+                        <label class = "btn rounded-circle my-radio" for = "option4">
+                        <img src="~/Images/Account/Avatar5.png" class = "rounded-circle" width="96" height= "96">
                         </label>
 
                     </div>
