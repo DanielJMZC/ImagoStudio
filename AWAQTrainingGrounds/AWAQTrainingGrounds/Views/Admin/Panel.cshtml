@@ -1,4 +1,4 @@
-@model AdminPanelViewModel
+@model AdminUsuariosViewModel
 
 <body class="CuerpoPanelAdmninistrador">
     
@@ -6,19 +6,19 @@
         <div class="row">
             <div class="col-md-4 ">
                 <div class="p-3 text-center CajaResumen ">
-                    <h4> <strong>Total de Usuarios:</strong> @Model.TotalUsuarios</h3>
+                    <h4> <strong>Total de Usuarios:</strong> @Model.Estadisticas.totalUsuarios</h3>
                 </div>
             </div>
 
             <div class="col-md-4 ">
                 <div class="p-3 text-center  CajaResumen">
-                    <h4> <strong>Promedio Monedas:</strong> @Model.PromedioMonedas</h4>
+                    <h4> <strong>Promedio Monedas:</strong> @Model.Estadisticas.promedioMonedas</h4>
                 </div>
             </div>
 
             <div class="col-md-4 ">
                 <div class="p-3 text-center  CajaResumen">
-                    <h4> <strong>Promedio Progreso:</strong> @Model.PromedioProgreso %</h4>
+                    <h4> <strong>Promedio Progreso:</strong> @Model.Estadisticas.promedioProgreso %</h4>
                 </div>
             </div>
         </div>
@@ -37,10 +37,11 @@
                     <input type="text" 
                         name="busqueda"
                         class="form-control rounded-pill"
-                        placeholder="Buscar usuario o país...">
+                        placeholder="Buscar usuario o país..."
+                        value="@Context.Request.Query["busqueda"]">
                 </form>
 
-                <a asp-controller="Admin"asp-action="Panel" class="btn btn-primary">
+                <a asp-controller="Admin" asp-action="Panel" class="btn btn-primary">
                     Borrar filtros
                 </a>
                 
@@ -85,23 +86,23 @@
 
 
 
-            @foreach (var usuario in Model.Usuarios)
+            @foreach (var usuario in Model.Usuarios.data)
             {
                 <div class="col-md-12 p-2 rounded text-center">
 
                     <div class="row text-center BarraTabla rounded p-1 align-items-center">
 
                         <div class="col-md-3">
-                            <p>@usuario.Nombre</p>
+                            <p>@usuario.nombre @usuario.apellido</p>
                         </div>
 
                         <div class="col-md-3">
-                            <p>@usuario.Correo</p>
+                            <p>@usuario.correo</p>
                         </div>
 
 
                         <div class="col-md-1">
-                            <p>@usuario.País</p>
+                            <p>@usuario.pais</p>
                         </div>
 
                         <div class="col-md-1">
@@ -111,7 +112,7 @@
                                 </div>
 
                                 <div style="width:40px; text-align:left;">
-                                    <span>@usuario.Monedas</span>
+                                    <span>@usuario.monedas</span>
                                 </div>
                             </div>  
                         </div>
@@ -120,8 +121,8 @@
                             <div class="progress">
                                 <div class="progress-bar BarraProgreso"
                                     role="progressbar"
-                                    style="width: @usuario.Progreso%;">
-                                    @usuario.Progreso%
+                                    style="width: @usuario.progreso%;">
+                                    @usuario.progreso%
                                 </div>
                             </div>
                         </div>
@@ -145,29 +146,31 @@
             <div class="row text-center mt-4">
 
                 <div class="col-md-6 d-flex justify-content-start">
-                    <p> <strong> Mostrando Página @Model.PaginaActual de @Model.TotalPaginas </strong> </p>
+                    <p> <strong> Mostrando Página @Model.Usuarios.page de @Model.Usuarios.totalPages</strong> </p>
                 </div>
 
 
                 <div class=" col-md-6 d-flex justify-content-end gap-2">
 
      
-                    @if (Model.PaginaActual > 1)
+                    @if (Model.Usuarios.page > 1)
                     {
                         <a asp-controller="Admin"
                         asp-action="Panel"
-                        asp-route-pagina="@(Model.PaginaActual - 1)"
+                        asp-route-pagina="@(Model.Usuarios.page - 1)"
+                        asp-route-busqueda="@Context.Request.Query["busqueda"]"
                         class="btn btn-primary">
                             Anterior
                         </a>
                     }
 
 
-                    @if (Model.PaginaActual < Model.TotalPaginas)
+                    @if (Model.Usuarios.page < Model.Usuarios.totalPages)
                     {
                         <a asp-controller="Admin"
                         asp-action="Panel"
-                        asp-route-pagina="@(Model.PaginaActual + 1)"
+                        asp-route-pagina="@(Model.Usuarios.page + 1)"
+                        asp-route-busqueda="@Context.Request.Query["busqueda"]"
                         class="btn btn-primary">
                             Siguiente
                         </a>

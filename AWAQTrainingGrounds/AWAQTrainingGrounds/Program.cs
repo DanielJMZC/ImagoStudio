@@ -3,6 +3,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+builder.Services.AddHttpClient<IUsuariosService, UsuariosService>()
+.ConfigurePrimaryHttpMessageHandler(() =>
+new HttpClientHandler
+{
+ServerCertificateCustomValidationCallback =
+HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
