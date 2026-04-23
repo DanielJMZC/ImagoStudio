@@ -1,83 +1,69 @@
 using Microsoft.AspNetCore.Mvc;
 using AWAQTrainingGrounds.Models;
+using AWAQTrainingGrounds.ViewModels;
 
 public class TiendaController : Controller
 {
-    // Empieza lo de Andrea - Sistema de gastar los puntos.
+    // El servicio que se conecta con la API REST.
+    private readonly ITiendaService _tiendaService;
 
     private static int puntos_eco = 1000;
     private static string ropa_puesta = "~/images/girlwhite.png";
 
-    // Lista de objetos de la tienda.
-    private static List<ObjectoTienda> listaObjetos = new List<ObjectoTienda>
+    // Permitimos consumir el API.
+    public TiendaController(ITiendaService tiendaService)
     {
-        new ObjectoTienda { IDObjecto = "1", ObjectoNombre = "Camisa roja",   Precio = 80,  SeCompro = false },
-        new ObjectoTienda { IDObjecto = "2", ObjectoNombre = "Camisa naranja",Precio = 100, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "3", ObjectoNombre = "Camisa amarilla",Precio = 150,SeCompro = false },
-        new ObjectoTienda { IDObjecto = "4", ObjectoNombre = "Camisa verde",  Precio = 200, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "5", ObjectoNombre = "Camisa azul",   Precio = 250, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "6", ObjectoNombre = "Camisa morada", Precio = 300, SeCompro = false }
-    };
+        _tiendaService = tiendaService;
+    }
 
-    public IActionResult Tienda()
+    // Página de la tienda.
+    public async Task<IActionResult> Tienda()
     {
+        // Obtenemos los cosmeticos de la API.
+        var cosmetics = await _tiendaService.obtener_cosmetics();
+
+
+        // Esto se queda igual como lo tenía antes.
         UsuarioTienda usuario1 = new UsuarioTienda();
         usuario1.UsuarioNombre = "Emma";
         usuario1.PuntosActuales = puntos_eco;
         usuario1.RopaActual = ropa_puesta;
 
-        return View(usuario1);
+        // Me vi obligada a utilizar un ViewModel para Tienda.cshtml.
+        TiendaViewModel vm = new TiendaViewModel();
+        vm.Usuario = usuario1;
+        vm.Cosmetics = cosmetics;
+
+        return View(vm);
     }
 
-[HttpPost]
-public IActionResult Comprar(string GastarPuntos)
-{
-    ObjectoTienda objetoSeleccionado = null;
-
-    // Buscar el objeto en la lista
-    foreach (ObjectoTienda obj in listaObjetos)
+    // Para cuando compramos.
+    [HttpPost]
+    public async Task<IActionResult> Comprar(string id)
     {
-        if (obj.IDObjecto == GastarPuntos)
-        {
-            objetoSeleccionado = obj;
-        }
-    }
+        // Obtenemos los cosmeticos de la API
+        var cosmetics = await _tiendaService.obtener_cosmetics();
 
-    if (objetoSeleccionado != null)
-    {
-        if (objetoSeleccionado.SeCompro == false && puntos_eco > objetoSeleccionado.Precio)
+        // Recorremos la lista para encontrar el objeto que seleccionamos.
+        Cosmetic seleccionado = null;
+        foreach (var cos in cosmetics)
         {
-            puntos_eco = puntos_eco - objetoSeleccionado.Precio;
-            objetoSeleccionado.SeCompro = true;
-
-            if (objetoSeleccionado.IDObjecto == "1")
+            if (cos.cosmeticType_id.ToString() == id)
             {
-                ropa_puesta = "~/images/girlred.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "2")
-            {
-                ropa_puesta = "~/images/girlorange.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "3")
-            {
-                ropa_puesta = "~/images/girlyellow.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "4")
-            {
-                ropa_puesta = "~/images/girlgreen.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "5")
-            {
-                ropa_puesta = "~/images/girlblue.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "6")
-            {
-                ropa_puesta = "~/images/girlpurple.png";
+                seleccionado = cos;
             }
         }
-    }
 
-    return RedirectToAction("Tienda");
-}
-    // Termina lo de Andrea.
+        // Si el jugador tiene suficientes monedas, el objeto se compra y equipa.
+        if (seleccionado != null)
+        {
+            if (puntos_eco >= seleccionado.price)
+            {
+                puntos_eco -= seleccionado.price;
+                ropa_puesta = "~/images/" + seleccionado.image_path;
+            }
+        }
+
+        return RedirectToAction("Tienda");
+    }
 }
