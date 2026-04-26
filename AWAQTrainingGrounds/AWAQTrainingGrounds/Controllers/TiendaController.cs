@@ -1,69 +1,58 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 using AWAQTrainingGrounds.Models;
 using AWAQTrainingGrounds.ViewModels;
 
 public class TiendaController : Controller
 {
-    // El servicio que se conecta con la API REST.
     private readonly ITiendaService _tiendaService;
+    
+    // Hardcodeamos el player 1 por ahora hasta que el login esté listo
+    private readonly int _currentPlayerId = 1;
 
-    private static int puntos_eco = 1000;
-    private static string ropa_puesta = "~/images/girlwhite.png";
-
-    // Permitimos consumir el API.
     public TiendaController(ITiendaService tiendaService)
     {
         _tiendaService = tiendaService;
     }
 
-    // Página de la tienda.
     public async Task<IActionResult> Tienda()
     {
-        // Obtenemos los cosmeticos de la API.
-        var cosmetics = await _tiendaService.obtener_cosmetics();
+        var vm = new TiendaViewModel();
 
+        // 1. Obtener info del jugador (Monedas)
+        vm.CurrentPlayer = await _tiendaService.GetPlayer(_currentPlayerId) ?? new Player { name = "Emma", currency = 0 };
 
-        // Esto se queda igual como lo tenía antes.
-        UsuarioTienda usuario1 = new UsuarioTienda();
-        usuario1.UsuarioNombre = "Emma";
-        usuario1.PuntosActuales = puntos_eco;
-        usuario1.RopaActual = ropa_puesta;
+        // 2. Obtener todos los cosméticos
+        var allCosmetics = await _tiendaService.GetAllCosmetics();
 
-        // Me vi obligada a utilizar un ViewModel para Tienda.cshtml.
-        TiendaViewModel vm = new TiendaViewModel();
-        vm.Usuario = usuario1;
-        vm.Cosmetics = cosmetics;
+        // 3. Obtener el inventario
+        var inventory = await _tiendaService.GetInventory(_currentPlayerId);
+
+        // 4. Obtener lo que tiene equipado
+        var equippedList = await _tiendaService.GetEquipped(_currentPlayerId);
+        vm.EquippedItem = equippedList.FirstOrDefault();
+
+        // 5. Separar los items
+        var inventoryIds = inventory.Select(i => i.cosmetic_id).ToList();
+
+        vm.StoreItems = allCosmetics; // Mantener todos los items en la tienda
+        vm.InventoryItems = inventory;
 
         return View(vm);
     }
 
-    // Para cuando compramos.
     [HttpPost]
-    public async Task<IActionResult> Comprar(string id)
+    public async Task<IActionResult> Comprar(int id)
     {
-        // Obtenemos los cosmeticos de la API
-        var cosmetics = await _tiendaService.obtener_cosmetics();
+        await _tiendaService.BuyCosmetic(_currentPlayerId, id);
+        return RedirectToAction("Tienda");
+    }
 
-        // Recorremos la lista para encontrar el objeto que seleccionamos.
-        Cosmetic seleccionado = null;
-        foreach (var cos in cosmetics)
-        {
-            if (cos.cosmeticType_id.ToString() == id)
-            {
-                seleccionado = cos;
-            }
-        }
-
-        // Si el jugador tiene suficientes monedas, el objeto se compra y equipa.
-        if (seleccionado != null)
-        {
-            if (puntos_eco >= seleccionado.price)
-            {
-                puntos_eco -= seleccionado.price;
-                ropa_puesta = "~/images/" + seleccionado.image_path;
-            }
-        }
-
+    [HttpPost]
+    public async Task<IActionResult> Equipar(int id)
+    {
+        await _tiendaService.EquipCosmetic(_currentPlayerId, id);
         return RedirectToAction("Tienda");
     }
 }

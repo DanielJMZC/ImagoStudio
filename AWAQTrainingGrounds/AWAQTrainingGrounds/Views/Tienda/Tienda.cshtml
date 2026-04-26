@@ -1,43 +1,219 @@
 @model AWAQTrainingGrounds.ViewModels.TiendaViewModel
 
-<link rel="stylesheet" href="~/css/style.css"/>
+<style>
+    /* VARIABLES BASADAS EN EL PANEL DE ADMINISTRADOR Y EL PROTOTIPO */
+    :root {
+        --admin-green: #184c2e; /* Verde oscuro principal para botones */
+        --admin-green-hover: #103620; /* Verde más oscuro para hover */
+        --admin-dark-green: #123821; /* Verde muy oscuro para header box */
+        --admin-text: #1b3d2b; /* Texto verde muy oscuro */
+        --admin-bg: #f4f6f4; /* Fondo claro de la página */
+    }
+    
+    body {
+        background-color: var(--admin-bg) !important;
+    }
 
-<div class="tienda_wrapper">
+    /* CLASES PERSONALIZADAS */
+    .text-admin {
+        color: var(--admin-text) !important;
+    }
+    
+    .bg-admin {
+        background-color: var(--admin-green) !important;
+        color: white;
+    }
 
-    <header>
-        <div class="titulo">Tienda de accesorios</div>
-        <div class="eco_points">@Model.Usuario.PuntosActuales Monedas</div>
-    </header>
+    .bg-admin-dark {
+        background-color: var(--admin-dark-green) !important;
+        color: white;
+    }
+    
+    .btn-admin {
+        background-color: var(--admin-green) !important;
+        color: white !important;
+        border: none;
+    }
+    .btn-admin:hover {
+        background-color: var(--admin-green-hover) !important;
+        color: white !important;
+    }
+    
+    .btn-outline-admin {
+        border: 1px solid var(--admin-green) !important;
+        color: var(--admin-green) !important;
+        background-color: white !important;
+    }
+    .btn-outline-admin.disabled, .btn-outline-admin:disabled {
+        opacity: 1 !important;
+    }
 
-    <div class="contenedor">
+    /* BORDES REDONDEADOS TIPO PROTOTIPO */
+    .rounded-xl {
+        border-radius: 16px !important;
+    }
 
-        <div class="tienda_layout">
+    /* SCROLLBAR PERSONALIZADO PARA EL INVENTARIO */
+    .inventory-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+    .inventory-scroll::-webkit-scrollbar-track {
+        background: #e9ecef;
+        border-radius: 10px;
+    }
+    .inventory-scroll::-webkit-scrollbar-thumb {
+        background: var(--admin-green);
+        border-radius: 10px;
+    }
 
-            <div class="lista_objetos">
+    .last-border-none:last-child {
+        border-bottom: none !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+</style>
 
-                @foreach (var item in Model.Cosmetics)
+<div class="container mt-4 mb-5">
+    
+    <!-- HEADER -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+            <h2 class="text-admin m-0 fw-bold" style="font-size: 2rem;">
+                Tienda de personajes
+            </h2>
+            <p class="text-muted mt-1 mb-0" style="font-size: 0.95rem;">Colecciona personajes únicos y mejora tu experiencia</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <div class="bg-admin-dark px-4 py-3 rounded-xl d-inline-flex align-items-center text-start shadow-sm" style="min-width: 260px;">
+                <img src="~/Images/Moneda.png" alt="Monedas" style="width: 50px; height: 50px; object-fit: contain; margin-right: -5px;">
+                <div class="d-flex flex-column ms-2">
+                    <span class="text-white-50 mb-0 lh-1" style="font-size: 0.9rem;">Monedas disponibles</span>
+                    <span class="fs-4 fw-bold text-white lh-1 mt-1" style="letter-spacing: 0.5px;">@Model.CurrentPlayer.currency.ToString("N0")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="row align-items-stretch">
+        
+        <!-- LADO IZQUIERDO: TIENDA -->
+        <div class="col-md-8 pe-md-4 mb-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                @foreach (var item in Model.StoreItems)
                 {
-                    <div class="objeto">
-                        <div class="item_card">
-                            <img src="~/images/@item.image_path">
-                            <div class="precio">$ @item.price</div>
-                        </div>
+                    bool isBought = Model.InventoryItems.Any(i => i.cosmetic_id == item.cosmetic_id);
 
-                        <form asp-action="Comprar" method="post">
-                            <input type="hidden" name="id" value="@item.cosmetic_id" />
-                            <button class="boton_comprar">Comprar</button>
-                        </form>
+                    <div class="col">
+                        <div class="card border-0 shadow-sm text-center p-3 rounded-xl d-flex flex-column">
+                            <div class="rounded-3 py-4" style="background-color: #f8f9fa;">
+                                <img src="~/Images/@item.image_path" class="mx-auto" alt="Cosmético" style="height: 140px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                            </div>
+                            <div class="mt-3 pt-1">
+                                <div class="fw-bold mb-3 fs-5 d-flex justify-content-center align-items-center">
+                                    <img src="~/Images/Moneda.png" alt="Moneda" style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;">
+                                    <span class="text-admin" style="color: #123821 !important;">@item.price.ToString("N0")</span>
+                                </div>
+                                
+                                @if (isBought)
+                                {
+                                    <button class="btn btn-outline-admin w-100 rounded-pill fw-bold py-2 disabled" style="font-size: 0.95rem; pointer-events: none;">Comprado</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-admin w-100 rounded-pill fw-bold py-2" style="font-size: 0.95rem;"
+                                            data-bs-toggle="modal" data-bs-target="#comprarModal"
+                                            onclick="document.getElementById('modalCosmeticId').value = '@item.cosmetic_id';">
+                                        Comprar
+                                    </button>
+                                }
+                            </div>
+                        </div>
                     </div>
                 }
+            </div>
+        </div>
 
+        <!-- LADO DERECHO: EQUIPADO E INVENTARIO -->
+        <div class="col-md-4 mb-4 d-flex flex-column">
+            
+            <!-- CAJA TU PERSONAJE -->
+            <div class="card border-0 shadow-sm bg-white rounded-xl mb-4">
+                <div class="card-body p-4">
+                    <h5 class="text-admin fw-bold mb-3" style="font-size: 1.1rem;">Tu personaje</h5>
+                    <!-- IMAGEN EQUIPADA -->
+                    <div class="rounded-3 py-4 text-center" style="background: radial-gradient(circle, #f8f9fa 0%, #e9ecef 100%);">
+                        @if (Model.EquippedItem != null)
+                        {
+                            <img src="~/Images/@Model.EquippedItem.image_path" alt="Personaje Equipado" style="height: 180px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                        }
+                        else
+                        {
+                            <div class="text-muted py-5">Ninguno</div>
+                        }
+                    </div>
+                </div>
             </div>
 
-            <div class="personaje">
-                <img src="@Url.Content(Model.Usuario.RopaActual)">
+            <!-- CAJA MI INVENTARIO -->
+            <div class="card border-0 shadow-sm bg-white rounded-xl flex-grow-1 d-flex flex-column" style="min-height: 250px;">
+                <div class="card-body p-4 d-flex flex-column">
+                    <h5 class="text-admin fw-bold mb-3" style="font-size: 1.1rem;">Mi inventario</h5>
+                    <div class="inventory-scroll flex-grow-1 pe-2" style="overflow-y: auto; overflow-x: hidden;">
+                        @foreach (var item in Model.InventoryItems)
+                        {
+                            var isEquipped = Model.EquippedItem != null && Model.EquippedItem.cosmetic_id == item.cosmetic_id;
+                            
+                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 last-border-none">
+                                <div class="d-flex align-items-center">
+                                    <img src="~/Images/@item.image_path" alt="Inventario" class="me-3" style="height: 45px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                                </div>
+                                
+                                @if (isEquipped)
+                                {
+                                    <button class="btn btn-outline-admin px-3 rounded-pill fw-bold disabled" style="font-size: 0.8rem; pointer-events: none;">Equipado</button>
+                                }
+                                else
+                                {
+                                    <form asp-action="Equipar" method="post" class="m-0">
+                                        <input type="hidden" name="id" value="@item.cosmetic_id" />
+                                        <button type="submit" class="btn btn-admin px-4 rounded-pill fw-bold" style="font-size: 0.8rem;">Equipar</button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                        @if (!Model.InventoryItems.Any())
+                        {
+                            <div class="text-center text-muted py-4">
+                                Aún no has comprado nada.
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
 
         </div>
-
     </div>
+</div>
 
+<!-- MODAL DE CONFIRMACIÓN -->
+<div class="modal fade" id="comprarModal" tabindex="-1" aria-labelledby="comprarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-xl border-0 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-admin" id="comprarModalLabel">Confirmar Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <p class="mt-3 fs-5 text-dark">¿Estás seguro de que quieres comprar esto?</p>
+      </div>
+      <div class="modal-footer border-0 d-flex justify-content-center pb-4">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancelar</button>
+        <form asp-action="Comprar" method="post" class="m-0">
+            <input type="hidden" name="id" id="modalCosmeticId" value="" />
+            <button type="submit" class="btn btn-admin rounded-pill px-5 fw-bold">Sí, comprar</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
