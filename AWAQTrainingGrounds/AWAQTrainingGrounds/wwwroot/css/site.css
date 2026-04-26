@@ -95,3 +95,95 @@ margin-bottom: 0px;
   border-color: #365f33;
   box-shadow: 0 0 5px #365f33;
 }
+
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.75rem;
+    background-color: #6F8C6D !important;
+}
+
+.title-home {
+  color: #5b7d5a  !important;
+}
+
+.my-submit-button {
+    background-color: #6F8C6D !important;
+    border-width: 0;
+    color: white;
+
+}
+
+.my-submit-button:hover
+{
+  color: white;
+}
+
+.my-submit-button.btn:active
+{
+     box-shadow: none;
+}
+
+.my-submit-button.btn:focus
+{
+    box-shadow: none;
+}
+
+.my-button {
+    background-color: #839b81 !important;
+    border-width: 0;
+    color:white;
+}
+
+.my-button:hover
+{
+  background-color: #839b81 !important;
+    border-width: 0;
+    color:white;
+}
+
+.my-button.btn:active
+{
+  box-shadow: none;
+}
+
+.my-button.btn:focus
+{
+    box-shadow: none;
+}
+
+
+header {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.profile-img {
+    height: 80%;
+    object-fit: cover;
+    border: 2px solid;
+}
+
+
+.profile-img-container img {
+    max-width: 225px;
+    max-height: 225px;
+    width: 100%;
+    height: auto;
+}
+
+.profile-img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 8px;
+    padding-right: 8px;
+
+}
+

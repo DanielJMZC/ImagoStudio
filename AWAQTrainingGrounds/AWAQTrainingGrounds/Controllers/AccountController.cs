@@ -6,11 +6,13 @@ public class AccountController: Controller
 {
     public IActionResult Login()
     {
+        HttpContext.Session.Clear();
         return View();
     }
 
     public IActionResult Register()
     {
+        HttpContext.Session.Clear(); 
         return View();
     }
 

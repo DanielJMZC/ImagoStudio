@@ -21,7 +21,7 @@ public class HomeController : Controller
         return View(user);
     }
 
-    public IActionResult Privacy()
+    public IActionResult Profile()
     {
         return View();
     }
