@@ -1,3 +1,5 @@
+using AWAQTrainingGrounds.Models;
+
 public interface IUsersService
 {
     Task<Users> AddUser(Users user);
@@ -8,4 +10,6 @@ public interface IUsersService
     Task<List<Countries>> GetCountries();
 
     Task<ProfileViewModel> GetProfile(int id);
+
+    Task<List<Cosmetic>> GetAvatars();
 }

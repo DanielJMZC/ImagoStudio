@@ -1,4 +1,5 @@
 using System.Text.Json;
+using AWAQTrainingGrounds.Models;
 
 public class UsersService: IUsersService
 {
@@ -100,6 +101,22 @@ public class UsersService: IUsersService
 
         return JsonSerializer.Deserialize<List<Countries>>(json) ?? new List<Countries>();
     
+    }
+
+    public async Task<List<Cosmetic>> GetAvatars()
+    {
+        var url = _baseURL + "/avatars";
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return new List<Cosmetic>();
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<List<Cosmetic>>(json) ?? new List<Cosmetic>();
     }
 
     public async Task<ProfileViewModel> GetProfile(int id)
