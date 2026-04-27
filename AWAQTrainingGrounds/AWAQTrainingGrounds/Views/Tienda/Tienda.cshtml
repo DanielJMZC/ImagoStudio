@@ -1,20 +1,18 @@
 @model AWAQTrainingGrounds.ViewModels.TiendaViewModel
 
 <style>
-    /* VARIABLES BASADAS EN EL PANEL DE ADMINISTRADOR Y EL PROTOTIPO */
     :root {
-        --admin-green: #184c2e; /* Verde oscuro principal para botones */
-        --admin-green-hover: #103620; /* Verde más oscuro para hover */
-        --admin-dark-green: #123821; /* Verde muy oscuro para header box */
-        --admin-text: #1b3d2b; /* Texto verde muy oscuro */
-        --admin-bg: #f4f6f4; /* Fondo claro de la página */
+        --admin-green: #365f33;
+        --admin-green-hover: #284826;
+        --admin-dark-green: #365f33;
+        --admin-text: #000000;
+        --admin-bg: #e9eee8;
     }
     
     body {
         background-color: var(--admin-bg) !important;
     }
 
-    /* CLASES PERSONALIZADAS */
     .text-admin {
         color: var(--admin-text) !important;
     }
@@ -48,7 +46,6 @@
         opacity: 1 !important;
     }
 
-    /* BORDES REDONDEADOS TIPO PROTOTIPO */
     .rounded-xl {
         border-radius: 16px !important;
     }
@@ -71,11 +68,20 @@
         margin-bottom: 0 !important;
         padding-bottom: 0 !important;
     }
+
+    .btn-cancel {
+        background-color: #8b2e2e !important;
+        color: white !important;
+        border: none !important;
+    }
+    .btn-cancel:hover {
+        background-color: #6a2323 !important;
+        color: white !important;
+    }
 </style>
 
 <div class="container mt-4 mb-5">
     
-    <!-- HEADER -->
     <div class="row mb-5 align-items-center">
         <div class="col-md-8">
             <h2 class="text-admin m-0 fw-bold" style="font-size: 2rem;">
@@ -87,14 +93,13 @@
             <div class="bg-admin-dark px-4 py-3 rounded-xl d-inline-flex align-items-center text-start shadow-sm" style="min-width: 260px;">
                 <img src="~/Images/Moneda.png" alt="Monedas" style="width: 50px; height: 50px; object-fit: contain; margin-right: -5px;">
                 <div class="d-flex flex-column ms-2">
-                    <span class="text-white-50 mb-0 lh-1" style="font-size: 0.9rem;">Monedas disponibles</span>
+                    <span class="text-white mb-0 lh-1" style="font-size: 0.9rem;">Monedas disponibles</span>
                     <span class="fs-4 fw-bold text-white lh-1 mt-1" style="letter-spacing: 0.5px;">@Model.CurrentPlayer.currency.ToString("N0")</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="row align-items-stretch">
         
         <!-- LADO IZQUIERDO: TIENDA -->
@@ -107,23 +112,25 @@
                     <div class="col">
                         <div class="card border-0 shadow-sm text-center p-3 rounded-xl d-flex flex-column">
                             <div class="rounded-3 py-4" style="background-color: #f8f9fa;">
-                                <img src="~/Images/@item.image_path" class="mx-auto" alt="Cosmético" style="height: 140px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                                <img src="@Url.Content(item.avatar_url.StartsWith("/") ? "~" + item.avatar_url : "~/Images/" + item.avatar_url)" class="mx-auto" alt="Cosmético" style="height: 140px; width: auto; object-fit: contain; image-rendering: pixelated;">
                             </div>
                             <div class="mt-3 pt-1">
+                                <div class="text-admin fw-bold mb-1" style="font-size: 1.1rem;">
+                                    @(string.IsNullOrEmpty(item.cosmetic_name) ? "Personaje" : item.cosmetic_name)
+                                </div>
                                 <div class="fw-bold mb-3 fs-5 d-flex justify-content-center align-items-center">
                                     <img src="~/Images/Moneda.png" alt="Moneda" style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;">
-                                    <span class="text-admin" style="color: #123821 !important;">@item.price.ToString("N0")</span>
+                                    <span style="color: black !important;">@item.price.ToString("N0")</span>
                                 </div>
                                 
                                 @if (isBought)
                                 {
-                                    <button class="btn btn-outline-admin w-100 rounded-pill fw-bold py-2 disabled" style="font-size: 0.95rem; pointer-events: none;">Comprado</button>
+                                    <button class="btn btn-outline-admin w-100 rounded-pill fw-bold py-2 disabled" style="font-size: 0.95rem; opacity: 1; pointer-events: none;">Comprado</button>
                                 }
                                 else
                                 {
                                     <button type="button" class="btn btn-admin w-100 rounded-pill fw-bold py-2" style="font-size: 0.95rem;"
-                                            data-bs-toggle="modal" data-bs-target="#comprarModal"
-                                            onclick="document.getElementById('modalCosmeticId').value = '@item.cosmetic_id';">
+                                            onclick="prepararConfirmacion('@item.cosmetic_id', @item.price)">
                                         Comprar
                                     </button>
                                 }
@@ -134,18 +141,15 @@
             </div>
         </div>
 
-        <!-- LADO DERECHO: EQUIPADO E INVENTARIO -->
         <div class="col-md-4 mb-4 d-flex flex-column">
             
-            <!-- CAJA TU PERSONAJE -->
             <div class="card border-0 shadow-sm bg-white rounded-xl mb-4">
                 <div class="card-body p-4">
-                    <h5 class="text-admin fw-bold mb-3" style="font-size: 1.1rem;">Tu personaje</h5>
-                    <!-- IMAGEN EQUIPADA -->
+                    <h5 class="fw-bold mb-3" style="font-size: 1.1rem; color: black !important;">Tu personaje</h5>
                     <div class="rounded-3 py-4 text-center" style="background: radial-gradient(circle, #f8f9fa 0%, #e9ecef 100%);">
                         @if (Model.EquippedItem != null)
                         {
-                            <img src="~/Images/@Model.EquippedItem.image_path" alt="Personaje Equipado" style="height: 180px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                            <img src="@Url.Content(Model.EquippedItem.avatar_url.StartsWith("/") ? "~" + Model.EquippedItem.avatar_url : "~/Images/" + Model.EquippedItem.avatar_url)" alt="Personaje Equipado" style="height: 180px; width: auto; object-fit: contain; image-rendering: pixelated;">
                         }
                         else
                         {
@@ -155,10 +159,10 @@
                 </div>
             </div>
 
-            <!-- CAJA MI INVENTARIO -->
             <div class="card border-0 shadow-sm bg-white rounded-xl flex-grow-1 d-flex flex-column" style="min-height: 250px;">
                 <div class="card-body p-4 d-flex flex-column">
-                    <h5 class="text-admin fw-bold mb-3" style="font-size: 1.1rem;">Mi inventario</h5>
+                    <h5 class="fw-bold mb-3" style="font-size: 1.1rem; color: black !important;">Tu inventario</h5>
+
                     <div class="inventory-scroll flex-grow-1 pe-2" style="overflow-y: auto; overflow-x: hidden;">
                         @foreach (var item in Model.InventoryItems)
                         {
@@ -166,7 +170,10 @@
                             
                             <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 last-border-none">
                                 <div class="d-flex align-items-center">
-                                    <img src="~/Images/@item.image_path" alt="Inventario" class="me-3" style="height: 45px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                                    <img src="@Url.Content(item.avatar_url.StartsWith("/") ? "~" + item.avatar_url : "~/Images/" + item.avatar_url)" alt="Inventario" class="me-3" style="height: 45px; width: auto; object-fit: contain; image-rendering: pixelated;">
+                                    <div>
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">@item.cosmetic_name</div>
+                                    </div>
                                 </div>
                                 
                                 @if (isEquipped)
@@ -196,24 +203,70 @@
     </div>
 </div>
 
-<!-- MODAL DE CONFIRMACIÓN -->
 <div class="modal fade" id="comprarModal" tabindex="-1" aria-labelledby="comprarModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-xl border-0 shadow">
       <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold text-admin" id="comprarModalLabel">Confirmar Compra</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title fw-bold" id="comprarModalLabel" style="color: black !important;">Confirmar Compra</h5>
       </div>
       <div class="modal-body text-center py-4">
         <p class="mt-3 fs-5 text-dark">¿Estás seguro de que quieres comprar esto?</p>
       </div>
       <div class="modal-footer border-0 d-flex justify-content-center pb-4">
-        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancelar</button>
-        <form asp-action="Comprar" method="post" class="m-0">
+        <button type="button" class="btn btn-cancel rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancelar</button>
+        <form asp-action="Comprar" method="post" class="m-0" id="formCompra">
             <input type="hidden" name="id" id="modalCosmeticId" value="" />
-            <button type="submit" class="btn btn-admin rounded-pill px-5 fw-bold">Sí, comprar</button>
+            <input type="hidden" id="modalCosmeticPrecio" value="" />
+            <button type="button" class="btn btn-admin rounded-pill px-5 fw-bold" onclick="procesarCompra()">Sí, comprar</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="errorDineroModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-xl border-0 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" style="color: black !important;">Fondos Insuficientes</h5>
+      </div>
+      <div class="modal-body text-center py-4">
+        <div class="mb-3">
+            <img src="~/Images/Moneda.png" alt="Error" style="width: 60px; height: 60px; opacity: 0.5;">
+        </div>
+        <p class="fs-5 text-dark">¡No tienes suficientes monedas para comprar este personaje!</p>
+      </div>
+      <div class="modal-footer border-0 d-flex justify-content-center pb-4">
+        <button type="button" class="btn btn-admin rounded-pill px-5 fw-bold" data-bs-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function prepararConfirmacion(id, precio) {
+        document.getElementById('modalCosmeticId').value = id;
+        document.getElementById('modalCosmeticPrecio').value = precio;
+        
+        var comprarModal = new bootstrap.Modal(document.getElementById('comprarModal'));
+        comprarModal.show();
+    }
+
+    function procesarCompra() {
+        const precio = parseInt(document.getElementById('modalCosmeticPrecio').value);
+        const dineroActual = @Model.CurrentPlayer.currency;
+        
+        if (dineroActual < precio) {
+            const modalElement = document.getElementById('comprarModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+            
+            setTimeout(() => {
+                var errorModal = new bootstrap.Modal(document.getElementById('errorDineroModal'));
+                errorModal.show();
+            }, 400);
+        } else {
+            document.getElementById('formCompra').submit();
+        }
+    }
+</script>

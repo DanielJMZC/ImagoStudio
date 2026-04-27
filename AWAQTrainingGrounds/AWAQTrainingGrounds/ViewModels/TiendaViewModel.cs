@@ -10,7 +10,6 @@ namespace AWAQTrainingGrounds.ViewModels
         public List<Cosmetic> InventoryItems { get; set; }
         public Cosmetic EquippedItem { get; set; }
         
-        // Constructor para inicializar las listas y evitar null references
         public TiendaViewModel()
         {
             StoreItems = new List<Cosmetic>();
