@@ -1,8 +1,105 @@
-﻿@{
+﻿@model Users
+@{
     ViewData["Title"] = "Home Page";
+    ViewData["HideNavbar"] = true;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+
+
+            <span class="title-home navbar-brand fw-bold">
+                AWAQTrainingGrounds
+            </span>
+
+            <div class="d-flex gap-2">
+
+                <a class="btn btn-outline-secondary my-submit-button"
+                   asp-controller="Account"
+                   asp-action="Login">
+                    Iniciar sesión
+                </a>
+
+                <a class="btn btn-primary my-submit-button"
+                   asp-controller="Account"
+                   asp-action="Register">
+                    Registrarse
+                </a>
+
+            </div>
+
+        </div>
+    </nav>
+</header>
+
+<div class="px-4 py-5 my-5 mb-1 text-center"> 
+    <h1 class="display-5 fw-bold text-body-emphasis title-home">
+        Campo de Entrenamiento AWAQ
+    </h1> 
+    
+    <div class="col-lg-8 mx-auto"> 
+        <p class="lead mb-4">
+            Una experiencia gamificada donde desarrollas habilidades reales, completas retos prácticos y te preparas paso a paso para destacar en el proceso de selección de AWAQ Campus Internships.
+        </p> 
+    </div> 
+</div>
+
+<div class="container px-4 py-5"> 
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3"> 
+        
+        <div class="feature col">
+             <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-2">
+                    <i class="bi bi-controller"></i>
+                </div>
+                <h3>Mini-juegos</h3> 
+            </div>
+
+            <p>Completa misiones, gana experiencia y enfrenta retos diseñados para simular el proceso real de AWAQ, mientras desarrollas las habilidades que te harán destacar como candidato.</p> 
+        </div> 
+        
+        <div class="feature col">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-2">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3>Progreso</h3> 
+            </div>
+           
+            <p>Visualiza tu avance en todo momento. Identifica en qué destacas, qué puedes mejorar y cómo te estás acercando a estar listo para aplicar.</p> 
+        </div> 
+        
+        <div class="feature col">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-2">
+                    <i class="bi bi-person-badge"></i>
+                </div>
+                <h3>Personalización</h3> 
+            </div>
+            <p>Desbloquea y adquiere personajes mientras avanzas. Personaliza tu experiencia y haz que tu camino hacia AWAQ sea único.</p> 
+        </div> 
+
+    </div> 
+</div>
+
+<div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg"> 
+    <div class="col-lg-7 p-3 p-lg-5 pt-lg-3"> 
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis title-home">Empieza Hoy</h1> 
+        <p class="lead mb-4">Empieza tu entrenamiento hoy y desarrolla las habilidades que necesitas para destacar en AWAQ Campus Internships. A través de retos prácticos y simulaciones del proceso real, podrás mejorar tu desempeño, identificar tus fortalezas y prepararte con mayor confianza para cada etapa de selección.</p> 
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3"> 
+                <a class="btn btn-primary btn-lg px-4 me-md-2 fw-bold my-submit-button"
+                asp-controller="Account" asp-action="Register">
+                    Registrarse
+                </a>
+
+                <a class="btn btn-outline-secondary btn-lg px-4 my-button"
+                asp-controller="Account" asp-action="Login">
+                    Iniciar Sesión
+                </a>
+            </div> 
+        </div> 
+    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg"> 
+        <img class="rounded-lg-3" src="~/Images/Home/ejemplo.png" alt="" width="720"> 
+    </div> 
 </div>
