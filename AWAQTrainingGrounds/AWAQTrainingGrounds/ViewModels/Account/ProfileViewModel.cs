@@ -5,7 +5,7 @@ public class ProfileViewModel
     public int GameWins { get; set; }
     public int CosmeticUnlocks { get; set; }
 
-    public string image_path { get; set;} = "";
+    public string profile_url { get; set;} = "";
 
     public int gameWin1 {get; set;}
     public int gameWin2 {get; set;}
