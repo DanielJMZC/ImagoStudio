@@ -7,9 +7,6 @@ using AWAQTrainingGrounds.ViewModels;
 public class TiendaController : Controller
 {
     private readonly ITiendaService _tiendaService;
-    
-    // Hardcodeamos el player 1 por ahora hasta que el login esté listo
-    private readonly int _currentPlayerId = 1;
 
     public TiendaController(ITiendaService tiendaService)
     {
@@ -18,25 +15,39 @@ public class TiendaController : Controller
 
     public async Task<IActionResult> Tienda()
     {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var playerId = await _tiendaService.GetPlayerIdByUserId(userId.Value);
+        if (playerId == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
         var vm = new TiendaViewModel();
 
-        // 1. Obtener info del jugador (Monedas)
-        vm.CurrentPlayer = await _tiendaService.GetPlayer(_currentPlayerId) ?? new Player { name = "Emma", currency = 0 };
+        var playerTask = _tiendaService.GetPlayer(playerId.Value);
+        var cosmeticsTask = _tiendaService.GetAllCosmetics();
+        var inventoryTask = _tiendaService.GetInventory(playerId.Value);
+        var equippedTask = _tiendaService.GetEquipped(playerId.Value);
 
-        // 2. Obtener todos los cosméticos
-        var allCosmetics = await _tiendaService.GetAllCosmetics();
+        await Task.WhenAll(playerTask, cosmeticsTask, inventoryTask, equippedTask);
 
-        // 3. Obtener el inventario
-        var inventory = await _tiendaService.GetInventory(_currentPlayerId);
+        vm.CurrentPlayer = await playerTask ?? new Player { name = "Emma", currency = 0 };
 
-        // 4. Obtener lo que tiene equipado
-        var equippedList = await _tiendaService.GetEquipped(_currentPlayerId);
+        var allCosmetics = await cosmeticsTask;
+
+        var inventory = await inventoryTask;
+
+        var equippedList = await equippedTask;
+
         vm.EquippedItem = equippedList.FirstOrDefault();
 
-        // 5. Separar los items
-        var inventoryIds = inventory.Select(i => i.cosmetic_id).ToList();
+        vm.StoreItems = allCosmetics;
 
-        vm.StoreItems = allCosmetics; // Mantener todos los items en la tienda
         vm.InventoryItems = inventory;
 
         return View(vm);
@@ -45,14 +56,30 @@ public class TiendaController : Controller
     [HttpPost]
     public async Task<IActionResult> Comprar(int id)
     {
-        await _tiendaService.BuyCosmetic(_currentPlayerId, id);
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId != null)
+        {
+            var playerId = await _tiendaService.GetPlayerIdByUserId(userId.Value);
+            if (playerId != null)
+            {
+                await _tiendaService.BuyCosmetic(playerId.Value, id);
+            }
+        }
         return RedirectToAction("Tienda");
     }
 
     [HttpPost]
     public async Task<IActionResult> Equipar(int id)
     {
-        await _tiendaService.EquipCosmetic(_currentPlayerId, id);
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId != null)
+        {
+            var playerId = await _tiendaService.GetPlayerIdByUserId(userId.Value);
+            if (playerId != null)
+            {
+                await _tiendaService.EquipCosmetic(playerId.Value, id);
+            }
+        }
         return RedirectToAction("Tienda");
     }
 }

@@ -1,4 +1,3 @@
-// Nuestro modelo cosmetic con su respectiva información.
 namespace AWAQTrainingGrounds.Models
 {
     public class Cosmetic
@@ -6,7 +5,8 @@ namespace AWAQTrainingGrounds.Models
         public int cosmetic_id { get; set; }
         public int cosmeticType_id { get; set; }
         public int price { get; set; }
-        public string image_path { get; set; }
+        public string? cosmetic_name { get; set; }
+        public string? profile_url { get; set; }
+        public string? avatar_url { get; set; }
     }
 }
-

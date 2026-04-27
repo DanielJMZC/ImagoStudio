@@ -8,6 +8,7 @@ public interface ITiendaService
     Task<List<Cosmetic>> GetAllCosmetics();
     Task<List<Cosmetic>> GetInventory(int playerId);
     Task<List<Cosmetic>> GetEquipped(int playerId);
+    Task<int?> GetPlayerIdByUserId(int userId);
     Task<bool> BuyCosmetic(int playerId, int cosmeticId);
     Task<bool> EquipCosmetic(int playerId, int cosmeticId);
 }
