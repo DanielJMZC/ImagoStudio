@@ -9,5 +9,9 @@ public class Users
     public string telefono {get; set;} = "";
     public string encrypted_password {get; set;} = "";
     public string correo {get; set;} = "";
-    public DateTime? fecha_de_nacimiento {get; set;}
+
+    //CountryName
+    public string name {get; set;} = "";
+
+     public DateTime? fecha_de_nacimiento {get; set;}
 }

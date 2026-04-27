@@ -7,11 +7,10 @@ namespace AWAQTrainingGrounds.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IUsersService _service;
+    public HomeController(IUsersService service)
     {
-        _logger = logger;
+        _service = service;
     }
 
     public IActionResult Index()
@@ -21,11 +20,19 @@ public class HomeController : Controller
         return View(user);
     }
 
-    public IActionResult Privacy()
+   public async Task<IActionResult> Profile()
     {
-        return View();
-    }
+        var id_user = HttpContext.Session.GetInt32("user_id");
 
+        if (!id_user.HasValue || id_user.Value <= 0)
+        {
+            return RedirectToAction("Index");
+        }
+
+        ProfileViewModel model = await _service.GetProfile(id_user.Value);
+
+        return View(model);
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
