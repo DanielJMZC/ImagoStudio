@@ -7,11 +7,11 @@
     <div class="col-sm-4 mb-1">
         <div class="card h-100">
              <div class = "mb-4 mt-4 profile-img-container">
-                <img src="~/Images/Account/Avatar2.png" class = "rounded-circle" id = "profile" width="192" height="192">
+                <img src="@Model.image_path" class = "rounded-circle" id = "profile" width="192" height="192">
             </div>
             <div class="card-body text-start">
-                <h5 class="card-title">Usuario</h5>
-                <p class="card-text text-muted">Correo</p>
+                <h5 class="card-title">@Model.User.nombre</h5>
+                <p class="card-text text-muted">@Model.User.correo</p>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                             <div class="card-body text-start">
                                 <h5 class="card-title">Paper Rush</h5>
                                 <p class="small">
-                                    Récord: 50/90
+                                    Récord: @Model.gameWin1/90
                                     <i class="bi bi-coin"></i>
                                 </p>
                             </div>
@@ -39,7 +39,7 @@
                             <div class="card-body text-start">
                                 <h5 class="card-title">Dudas</h5>
                                 <p class="small">
-                                    Récord: 50/90
+                                    Récord: @Model.gameWin2/90
                                     <i class="bi bi-coin"></i>
                                 </p>
                             </div>
@@ -51,7 +51,7 @@
                             <div class="card-body text-start">
                                 <h5 class="card-title">Puestos</h5>
                                 <p class="small">
-                                    Récord: 50/90
+                                    Récord: @Model.gameWin3/90
                                     <i class="bi bi-coin"></i>
                                 </p>
                             </div>
@@ -70,21 +70,21 @@
                         <i class="bi bi-globe"></i>
                         <div>
                             <strong>País:</strong><br>
-                            <span class="text-muted">Mexico</span>
+                            <span class="text-muted">@Model.User.name</span>
                         </div>
                     </div>
                     <div class="mb-3 d-flex gap-2">
                         <i class="bi bi-cake2"></i>
                         <div>
                             <strong>Cumpleaños:</strong><br>
-                            <span class="text-muted">01/01/2000</span>
+                            <span class="text-muted">@Model.User.fecha_de_nacimiento.ToString("dd/MM/yyyy")</span>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
                         <i class="bi bi-telephone"></i>
                         <div>
                             <strong>Teléfono:</strong><br>
-                            <span class="text-muted">+52 123 456 7890</span>
+                            <span class="text-muted">@Model.User.telefono</span>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                         <i class="bi bi-coin"></i>
                         <div>
                             <strong>Monedas:</strong><br>
-                            <span class="text-muted">250</span>
+                            <span class="text-muted">@Model.Coins</span>
                         </div>
                     </div>
                     
@@ -105,7 +105,7 @@
                         <i class="bi bi-controller"></i>
                         <div>
                             <strong>Juegos Completados:</strong><br>
-                            <span class="text-muted">12</span>
+                            <span class="text-muted">@Model.GameWins</span>
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
                         <i class="bi bi-gift"></i>
                         <div>
                             <strong>Cosméticos Desbloqueados:</strong><br>
-                            <span class="text-muted">5</span>
+                            <span class="text-muted">@Model.CosmeticUnlocks</span>
                         </div>
                     </div>
                 </div>

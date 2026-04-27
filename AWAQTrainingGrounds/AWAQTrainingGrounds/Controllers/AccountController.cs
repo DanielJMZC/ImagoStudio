@@ -4,6 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 public class AccountController: Controller
 {
+
+
+    private readonly IUsersService _service;
+    public AccountController(IUsersService service)
+    {
+        _service = service;
+    }
     public IActionResult Login()
     {
         HttpContext.Session.Clear();
@@ -16,7 +23,9 @@ public class AccountController: Controller
         return View();
     }
 
-    public IActionResult RegisterProfile()
+
+    [HttpGet]
+    public async Task<IActionResult> RegisterProfile()
     {
         var id_user = HttpContext.Session.GetInt32("user_id");
 
@@ -25,13 +34,10 @@ public class AccountController: Controller
             return RedirectToAction("Login");
         }
 
-        return View();
-    }
+        RegisterViewModel model = new RegisterViewModel();
+        model.countries = await _service.GetCountries();
+        return View(model);
 
-    private readonly IUsersService _service;
-    public AccountController(IUsersService service)
-    {
-        _service = service;
     }
 
     [HttpPost]
@@ -80,7 +86,7 @@ public class AccountController: Controller
 
         if (model.country_id != null)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Profile");
         }
 
         return View(model);
@@ -108,7 +114,7 @@ public class AccountController: Controller
             }
             
             if (user.country_id != null) {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Profile", "Home");
             } else
             {
                 return RedirectToAction("RegisterProfile");
