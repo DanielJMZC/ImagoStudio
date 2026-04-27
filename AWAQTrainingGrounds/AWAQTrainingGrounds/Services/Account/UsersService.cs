@@ -3,6 +3,7 @@ using System.Text.Json;
 public class UsersService: IUsersService
 {
     private readonly HttpClient _httpClient;
+     private readonly string _baseURL = "https://127.0.0.1:5550";
 
     public UsersService(HttpClient httpClient)
     {
@@ -10,7 +11,7 @@ public class UsersService: IUsersService
     }
     public async Task<Users> AddUser(Users user)
     {
-        var url = "https://127.0.0.1:5550/users/register";
+        var url = _baseURL + "/users/register";
         var post = JsonSerializer.Serialize(user);
 
         var content = new StringContent(post, System.Text.Encoding.UTF8, "application/json");
@@ -35,7 +36,7 @@ public class UsersService: IUsersService
     }
 
     public async Task<Users> LoginUser(Users user)
-    {  var url = "https://127.0.0.1:5550/users/login";
+    {  var url = _baseURL + "/users/login";
         var post = JsonSerializer.Serialize(user);
 
         var content = new StringContent(post, System.Text.Encoding.UTF8, "application/json");
@@ -63,7 +64,7 @@ public class UsersService: IUsersService
     {
         if (user.user_id != null)
         {
-            var url = "https://127.0.0.1:5550/users/" + user.user_id;
+            var url = _baseURL + "/users/" + user.user_id;
             var post = JsonSerializer.Serialize(user);
 
             var content = new StringContent(post, System.Text.Encoding.UTF8, "application/json");
@@ -86,7 +87,7 @@ public class UsersService: IUsersService
 
     public async Task<List<Countries>> GetCountries()
     {
-        var url = "https://127.0.0.1:5550/countries";
+        var url = _baseURL + "/countries";
 
         var response = await _httpClient.GetAsync(url);
 
@@ -103,7 +104,7 @@ public class UsersService: IUsersService
 
     public async Task<ProfileViewModel> GetProfile(int id)
     {
-        var url = "https://127.0.0.1:5550/users/" + id;
+        var url = _baseURL + "/users/" + id;
 
         var response = await _httpClient.GetAsync(url);
 

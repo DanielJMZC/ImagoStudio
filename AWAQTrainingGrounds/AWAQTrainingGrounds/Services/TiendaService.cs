@@ -8,7 +8,7 @@ using AWAQTrainingGrounds.Models;
 public class TiendaService : ITiendaService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "https://127.0.0.1:5550/players";
+    private readonly string _baseUrl = "https://127.0.0.1:5540";
 
     public TiendaService(HttpClient httpClient)
     {
@@ -17,7 +17,7 @@ public class TiendaService : ITiendaService
 
     public async Task<Player> GetPlayer(int playerId)
     {
-        var response = await _httpClient.GetAsync($"{_baseUrl}/{playerId}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/players/{playerId}");
         if (!response.IsSuccessStatusCode) return null;
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<Player>(json);
@@ -25,7 +25,7 @@ public class TiendaService : ITiendaService
 
     public async Task<List<Cosmetic>> GetAllCosmetics()
     {
-        var response = await _httpClient.GetAsync($"{_baseUrl}/cosmetics");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/players/cosmetics");
         if (!response.IsSuccessStatusCode) return new List<Cosmetic>();
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<Cosmetic>>(json) ?? new List<Cosmetic>();
@@ -33,7 +33,7 @@ public class TiendaService : ITiendaService
 
     public async Task<List<Cosmetic>> GetInventory(int playerId)
     {
-        var response = await _httpClient.GetAsync($"{_baseUrl}/{playerId}/inventory");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/players/{playerId}/inventory");
         if (!response.IsSuccessStatusCode) return new List<Cosmetic>();
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<Cosmetic>>(json) ?? new List<Cosmetic>();
@@ -41,7 +41,7 @@ public class TiendaService : ITiendaService
 
     public async Task<List<Cosmetic>> GetEquipped(int playerId)
     {
-        var response = await _httpClient.GetAsync($"{_baseUrl}/{playerId}/equipped");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/players/{playerId}/equipped");
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
@@ -52,7 +52,7 @@ public class TiendaService : ITiendaService
 
     public async Task<int?> GetPlayerIdByUserId(int userId)
     {
-        var response = await _httpClient.GetAsync($"https://127.0.0.1:5550/users/{userId}/player");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/users/{userId}/player");
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
@@ -66,7 +66,7 @@ public class TiendaService : ITiendaService
     {
         var payload = new { cosmetic_id = cosmeticId };
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync($"{_baseUrl}/{playerId}/buy", content);
+        var response = await _httpClient.PostAsync($"{_baseUrl}/players/{playerId}/buy", content);
         return response.IsSuccessStatusCode;
     }
 
@@ -74,7 +74,7 @@ public class TiendaService : ITiendaService
     {
         var payload = new { cosmetic_id = cosmeticId };
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PutAsync($"{_baseUrl}/{playerId}/equip", content);
+        var response = await _httpClient.PutAsync($"{_baseUrl}/players/{playerId}/equip", content);
         return response.IsSuccessStatusCode;
     }
 }
