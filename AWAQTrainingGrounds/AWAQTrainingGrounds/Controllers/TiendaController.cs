@@ -1,83 +1,58 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 using AWAQTrainingGrounds.Models;
+using AWAQTrainingGrounds.ViewModels;
 
 public class TiendaController : Controller
 {
-    // Empieza lo de Andrea - Sistema de gastar los puntos.
+    private readonly ITiendaService _tiendaService;
+    
+    // Hardcodeamos el player 1 por ahora hasta que el login esté listo
+    private readonly int _currentPlayerId = 1;
 
-    private static int puntos_eco = 1000;
-    private static string ropa_puesta = "~/images/girlwhite.png";
-
-    // Lista de objetos de la tienda.
-    private static List<ObjectoTienda> listaObjetos = new List<ObjectoTienda>
+    public TiendaController(ITiendaService tiendaService)
     {
-        new ObjectoTienda { IDObjecto = "1", ObjectoNombre = "Camisa roja",   Precio = 80,  SeCompro = false },
-        new ObjectoTienda { IDObjecto = "2", ObjectoNombre = "Camisa naranja",Precio = 100, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "3", ObjectoNombre = "Camisa amarilla",Precio = 150,SeCompro = false },
-        new ObjectoTienda { IDObjecto = "4", ObjectoNombre = "Camisa verde",  Precio = 200, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "5", ObjectoNombre = "Camisa azul",   Precio = 250, SeCompro = false },
-        new ObjectoTienda { IDObjecto = "6", ObjectoNombre = "Camisa morada", Precio = 300, SeCompro = false }
-    };
-
-    public IActionResult Tienda()
-    {
-        UsuarioTienda usuario1 = new UsuarioTienda();
-        usuario1.UsuarioNombre = "Emma";
-        usuario1.PuntosActuales = puntos_eco;
-        usuario1.RopaActual = ropa_puesta;
-
-        return View(usuario1);
+        _tiendaService = tiendaService;
     }
 
-[HttpPost]
-public IActionResult Comprar(string GastarPuntos)
-{
-    ObjectoTienda objetoSeleccionado = null;
-
-    // Buscar el objeto en la lista
-    foreach (ObjectoTienda obj in listaObjetos)
+    public async Task<IActionResult> Tienda()
     {
-        if (obj.IDObjecto == GastarPuntos)
-        {
-            objetoSeleccionado = obj;
-        }
+        var vm = new TiendaViewModel();
+
+        // 1. Obtener info del jugador (Monedas)
+        vm.CurrentPlayer = await _tiendaService.GetPlayer(_currentPlayerId) ?? new Player { name = "Emma", currency = 0 };
+
+        // 2. Obtener todos los cosméticos
+        var allCosmetics = await _tiendaService.GetAllCosmetics();
+
+        // 3. Obtener el inventario
+        var inventory = await _tiendaService.GetInventory(_currentPlayerId);
+
+        // 4. Obtener lo que tiene equipado
+        var equippedList = await _tiendaService.GetEquipped(_currentPlayerId);
+        vm.EquippedItem = equippedList.FirstOrDefault();
+
+        // 5. Separar los items
+        var inventoryIds = inventory.Select(i => i.cosmetic_id).ToList();
+
+        vm.StoreItems = allCosmetics; // Mantener todos los items en la tienda
+        vm.InventoryItems = inventory;
+
+        return View(vm);
     }
 
-    if (objetoSeleccionado != null)
+    [HttpPost]
+    public async Task<IActionResult> Comprar(int id)
     {
-        if (objetoSeleccionado.SeCompro == false && puntos_eco > objetoSeleccionado.Precio)
-        {
-            puntos_eco = puntos_eco - objetoSeleccionado.Precio;
-            objetoSeleccionado.SeCompro = true;
-
-            if (objetoSeleccionado.IDObjecto == "1")
-            {
-                ropa_puesta = "~/images/girlred.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "2")
-            {
-                ropa_puesta = "~/images/girlorange.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "3")
-            {
-                ropa_puesta = "~/images/girlyellow.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "4")
-            {
-                ropa_puesta = "~/images/girlgreen.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "5")
-            {
-                ropa_puesta = "~/images/girlblue.png";
-            }
-            else if (objetoSeleccionado.IDObjecto == "6")
-            {
-                ropa_puesta = "~/images/girlpurple.png";
-            }
-        }
+        await _tiendaService.BuyCosmetic(_currentPlayerId, id);
+        return RedirectToAction("Tienda");
     }
 
-    return RedirectToAction("Tienda");
-}
-    // Termina lo de Andrea.
+    [HttpPost]
+    public async Task<IActionResult> Equipar(int id)
+    {
+        await _tiendaService.EquipCosmetic(_currentPlayerId, id);
+        return RedirectToAction("Tienda");
+    }
 }

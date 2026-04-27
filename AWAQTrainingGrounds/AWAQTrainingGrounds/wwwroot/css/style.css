@@ -78,7 +78,7 @@ body{
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:10px;
+    gap:14px;
 }
 
 /* CUADRO BLANCO DEL ITEM */
@@ -88,7 +88,6 @@ body{
     border-radius:16px;
     padding:20px;
     width:130px;
-    height:130px;
 
     display:flex;
     flex-direction:column;
@@ -120,6 +119,7 @@ body{
     border-radius:10px;
     font-weight:bold;
     cursor:pointer;
+    margin-top: 6px;
 }
 
 .boton_comprar:hover{
