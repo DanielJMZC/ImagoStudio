@@ -16,7 +16,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        Users user = new Users();
+        user.user_id = HttpContext.Session.GetInt32("user_id");
+        return View(user);
     }
 
     public IActionResult Privacy()
