@@ -8,7 +8,7 @@ using AWAQTrainingGrounds.Models;
 public class TiendaService : ITiendaService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "https://127.0.0.1:5000/players";
+    private readonly string _baseUrl = "https://127.0.0.1:5550/players";
 
     public TiendaService(HttpClient httpClient)
     {
@@ -42,9 +42,24 @@ public class TiendaService : ITiendaService
     public async Task<List<Cosmetic>> GetEquipped(int playerId)
     {
         var response = await _httpClient.GetAsync($"{_baseUrl}/{playerId}/equipped");
-        if (!response.IsSuccessStatusCode) return new List<Cosmetic>();
-        var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<Cosmetic>>(json) ?? new List<Cosmetic>();
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<Cosmetic>>(content) ?? new List<Cosmetic>();
+        }
+        return new List<Cosmetic>();
+    }
+
+    public async Task<int?> GetPlayerIdByUserId(int userId)
+    {
+        var response = await _httpClient.GetAsync($"https://127.0.0.1:5550/users/{userId}/player");
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<JsonElement>(content);
+            return result.GetProperty("player_id").GetInt32();
+        }
+        return null;
     }
 
     public async Task<bool> BuyCosmetic(int playerId, int cosmeticId)
