@@ -83,4 +83,37 @@ public class UsersService: IUsersService
         }
         
     }
+
+    public async Task<List<Countries>> GetCountries()
+    {
+        var url = "https://127.0.0.1:5550/countries";
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return new List<Countries>();
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<List<Countries>>(json) ?? new List<Countries>();
+    
+    }
+
+    public async Task<ProfileViewModel> GetProfile(int id)
+    {
+        var url = "https://127.0.0.1:5550/users/" + id;
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return new ProfileViewModel();
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<ProfileViewModel>(json) ?? new ProfileViewModel();
+    }
 }

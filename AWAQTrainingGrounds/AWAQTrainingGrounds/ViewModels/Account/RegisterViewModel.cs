@@ -12,4 +12,6 @@ public class RegisterViewModel
 
     public int? cosmetic_id {get; set;} 
     public int? user_id { get; set; }
+
+    public List<Countries>? countries {get; set;}
 }
