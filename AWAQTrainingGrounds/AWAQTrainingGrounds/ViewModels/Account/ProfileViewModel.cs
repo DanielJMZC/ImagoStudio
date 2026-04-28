@@ -10,5 +10,8 @@ public class ProfileViewModel
     public int gameWin1 {get; set;}
     public int gameWin2 {get; set;}
     public int gameWin3 {get; set;}
+    public int gameMax1 {get; set;}
+    public int gameMax2 {get; set;}
+    public int gameMax3 {get; set;}
 
 }

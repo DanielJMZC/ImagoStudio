@@ -8,8 +8,8 @@ using AWAQTrainingGrounds.Models;
 public class TiendaService : ITiendaService
 {
     private readonly HttpClient _httpClient;
-    //private readonly string _baseUrl = "https://10.14.255.43:5540";
-    private readonly string _baseUrl = "https://127.0.0.1:5540";
+    private readonly string _baseUrl = "https://10.14.255.43:5540";
+    //private readonly string _baseUrl = "https://127.0.0.1:5540";
 
     public TiendaService(HttpClient httpClient)
     {
