@@ -1,0 +1,272 @@
+@model NPCAdminViewModel
+
+<div>
+    <div class="px-5">
+        <div class="row">
+            <div class="col-md-1 b-verde p-2 me-5 d-flex align-items-center justify-content-center rounded-top">
+                <a asp-controller="Admin" asp-action="Panel" class="text-dark text-decoration-none fw-bold fs-5">Usuarios</a>
+            </div>
+
+            <div class="col-md-1 bg-white p-2 me-5 d-flex align-items-center justify-content-center rounded-top">
+                <a asp-controller="Admin" asp-action="Juego" class="text-dark text-decoration-none fw-bold fs-5">Juego</a>
+            </div>
+
+            <div class="col-md-1 b-verde p-2 me-5 d-flex align-items-center justify-content-center rounded-top">
+                <a asp-controller="Admin" asp-action="Graficas" class="text-dark text-decoration-none fw-bold fs-5">Gráficas</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-5 rounded">
+
+        <form asp-controller="Admin" asp-action="GuardarJuego" method="post">
+
+            <input type="hidden" asp-for="NpcId" />
+
+    
+            <div class="mb-4 SeccionResumen p-4 w-50 d-flex align-items-center gap-3 justify-content-center">
+                <label class="form-label mb-0 lh-1 fs-4"><strong>Seleccionar NPC:</strong></label>
+
+                <select name="npcId"
+                        class="form-select w-25"
+                        onchange="location.href='@Url.Action("Juego", "Admin")?npcId=' + this.value">
+
+                    @for (int npc = 1; npc <= 7; npc++)
+                    {
+                        if (Model.NpcId == npc)
+                        {
+                            <option value="@npc" selected>NPC @npc</option>
+                        }
+                        else
+                        {
+                            <option value="@npc">NPC @npc</option>
+                        }
+                    }
+
+                </select>
+            </div>
+
+      
+            <div class="row SeccionResumen p-3">
+
+
+                <div class="col-md-6">
+                    <section class="mb-5">
+                        <h3 class="CajaTabla rounded p-2">Diálogos</h3>
+
+                        <div id="dialogos-container" class="CajaTabla p-2 rounded">
+                            @for (int i = 0; i < Model.Dialogos.Count; i++)
+                            {
+                                <div class="mb-3 border rounded p-3 dialogo-item SeccionResumen m-4">
+
+                                    <label class="form-label">Diálogo @(i + 1)</label>
+
+                                    <input type="hidden" name="Dialogos[@i].Id" value="@Model.Dialogos[i].Id" />
+
+                                    <textarea name="Dialogos[@i].Texto"
+                                            class="form-control CajaResumen"
+                                            rows="2">@Model.Dialogos[i].Texto</textarea>
+
+                                    <button type="button"
+                                            class="btn btn-danger mt-2"
+                                            onclick="this.parentElement.remove()">
+                                        Eliminar diálogo
+                                    </button>
+                                </div>
+                            }
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-primary mt-2"
+                                onclick="agregarDialogo()">
+                            Agregar diálogo
+                        </button>
+                    </section>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <section>
+                        <h3 class="CajaTabla rounded p-2">Preguntas y Respuestas</h3>
+
+                        <div id="preguntas-container" class="CajaTabla p-2 rounded">
+
+                            @for (int i = 0; i < Model.Preguntas.Count; i++)
+                            {
+                                <div class="border rounded p-4 mb-4 pregunta-item SeccionResumen m-4">
+
+                                    <label class="form-label">
+                                        <strong>Pregunta @(i + 1)</strong>
+                                    </label>
+
+                                    <input type="hidden" name="Preguntas[@i].Id" value="@Model.Preguntas[i].Id" />
+
+                                    <input name="Preguntas[@i].Enunciado"
+                                        value="@Model.Preguntas[i].Enunciado"
+                                        class="form-control mb-3 CajaResumen" />
+
+                                    <div class="respuestas-container ">
+
+                                        @for (int j = 0; j < Model.Preguntas[i].Respuestas.Count; j++)
+                                        {
+                                            <div class="border rounded p-3 mb-2 respuesta-item CajaTabla">
+
+                                                <input type="hidden"
+                                                    name="Preguntas[@i].Respuestas[@j].Id"
+                                                    value="@Model.Preguntas[i].Respuestas[j].Id" />
+
+                                                <label class="form-label">
+                                                    Respuesta @(j + 1)
+                                                </label>
+
+                                                <input name="Preguntas[@i].Respuestas[@j].Texto"
+                                                    value="@Model.Preguntas[i].Respuestas[j].Texto"
+                                                    class="form-control mb-2 CajaResumen" />
+
+                                                <div class="form-check">
+                                                    @if (Model.Preguntas[i].Respuestas[j].EsCorrecta)
+                                                    {
+                                                        <input type="checkbox"
+                                                            name="Preguntas[@i].Respuestas[@j].EsCorrecta"
+                                                            value="true"
+                                                            checked
+                                                            class="form-check-input" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox"
+                                                            name="Preguntas[@i].Respuestas[@j].EsCorrecta"
+                                                            value="true"
+                                                            class="form-check-input" />
+                                                    }
+
+                                                    <label class="form-check-label">
+                                                        Correcta
+                                                    </label>
+                                                </div>
+
+                                                <button type="button"
+                                                        class="btn btn-danger mt-2"
+                                                        onclick="this.parentElement.remove()">
+                                                    Eliminar respuesta
+                                                </button>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <button type="button"
+                                            class="btn btn-secondary mt-2"
+                                            onclick="agregarRespuesta(this, @i)">
+                                        Agregar respuesta
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-danger mt-2 ms-2"
+                                            onclick="this.parentElement.remove()">
+                                        Eliminar pregunta
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-primary mt-2"
+                                onclick="agregarPregunta()">
+                            Agregar pregunta
+                        </button>
+
+                    </section>
+                </div>
+
+            </div>
+
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    Guardar Cambios
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function agregarDialogo() {
+        let container = document.getElementById("dialogos-container");
+        let index = container.children.length;
+
+        container.insertAdjacentHTML("beforeend", `
+            <div class="mb-3 border rounded p-3 dialogo-item">
+                <label class="form-label">Diálogo ${index + 1}</label>
+                <input type="hidden" name="Dialogos[${index}].Id" value="0" />
+                <textarea name="Dialogos[${index}].Texto" class="form-control" rows="2"></textarea>
+                <button type="button" class="btn btn-danger mt-2" onclick="this.parentElement.remove()">
+                    Eliminar diálogo
+                </button>
+            </div>
+        `);
+    }
+
+    function agregarPregunta() {
+        let container = document.getElementById("preguntas-container");
+        let index = container.children.length;
+
+        container.insertAdjacentHTML("beforeend", `
+            <div class="border rounded p-4 mb-4 pregunta-item">
+                <label class="form-label"><strong>Pregunta ${index + 1}</strong></label>
+                <input type="hidden" name="Preguntas[${index}].Id" value="0" />
+                <input name="Preguntas[${index}].Enunciado" class="form-control mb-3" />
+
+                <div class="respuestas-container"></div>
+
+                <button type="button"
+                        class="btn btn-secondary mt-2"
+                        onclick="agregarRespuesta(this, ${index})">
+                    Agregar respuesta
+                </button>
+
+                <button type="button"
+                        class="btn btn-danger mt-2 ms-2"
+                        onclick="this.parentElement.remove()">
+                    Eliminar pregunta
+                </button>
+            </div>
+        `);
+    }
+
+    function agregarRespuesta(button, preguntaIndex) {
+        let container = button.parentElement.querySelector(".respuestas-container");
+        let index = container.children.length;
+
+        container.insertAdjacentHTML("beforeend", `
+            <div class="border rounded p-3 mb-2 respuesta-item">
+                <input type="hidden" name="Preguntas[${preguntaIndex}].Respuestas[${index}].Id" value="0" />
+
+                <label class="form-label">Respuesta ${index + 1}</label>
+
+                <input name="Preguntas[${preguntaIndex}].Respuestas[${index}].Texto"
+                       class="form-control mb-2" />
+
+                <div class="form-check">
+                    <input type="checkbox"
+                           name="Preguntas[${preguntaIndex}].Respuestas[${index}].EsCorrecta"
+                           value="true"
+                           class="form-check-input" />
+                    <label class="form-check-label">Correcta</label>
+                </div>
+
+                <button type="button"
+                        class="btn btn-danger mt-2"
+                        onclick="this.parentElement.remove()">
+                    Eliminar respuesta
+                </button>
+            </div>
+        `);
+    }
+</script>

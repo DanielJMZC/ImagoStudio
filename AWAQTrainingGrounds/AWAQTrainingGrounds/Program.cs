@@ -18,6 +18,22 @@ builder.Services.AddHttpClient<IUsersService, UsersService>()
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
 
+builder.Services.AddHttpClient<IUsuariosService, UsuariosService>()
+    .ConfigurePrimaryHttpMessageHandler(() =>
+        new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        });
+
+builder.Services.AddHttpClient<INPCAdminService, NPCAdminService>()
+    .ConfigurePrimaryHttpMessageHandler(() =>
+        new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        });
+
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;

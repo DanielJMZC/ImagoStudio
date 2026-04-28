@@ -82,8 +82,8 @@ margin-bottom: 0px;
 }
 
 .btn-primary:hover{
-  background-color: #bfcdbe;
-  border-color: #bfcdbe;
+  background-color: #96ac95;
+  border-color: #96ac95;
   color: black;
 }
 
@@ -211,4 +211,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+.b-verde{
+  background-color: #bfcdbe;
 }

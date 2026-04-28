@@ -12,4 +12,5 @@ public interface IUsersService
     Task<ProfileViewModel> GetProfile(int id);
 
     Task<List<Cosmetic>> GetAvatars();
+    Task<bool> IsAdmin(int userId);
 }
