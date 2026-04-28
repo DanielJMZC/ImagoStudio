@@ -211,6 +211,9 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+
+}
+
 .b-verde{
   background-color: #bfcdbe;
 }
