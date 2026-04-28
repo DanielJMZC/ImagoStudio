@@ -22,20 +22,23 @@
                     </span>
 
                     <div class = "d-flex gap-3 me-5">
-                    
-                        <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Home" asp-action="Profile">Perfil</a>
             
             
                         <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Tienda" asp-action="Tienda">Tienda</a>
 
-                        <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-
+                    
                         <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Home" asp-action="Videojuego">Videojuego</a>
 
 
                         @if (Context.Session.GetInt32("is_admin") == 1)
                         {
                             <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Admin" asp-action="Panel">Panel Admnistrador</a>
+                        
+                        } else{
+
+                             <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Home" asp-action="Profile">Perfil</a>
+
+                            <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                         }
                
                     </div>
