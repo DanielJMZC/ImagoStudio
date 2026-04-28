@@ -36,6 +36,8 @@ public class AccountController: Controller
 
         RegisterViewModel model = new RegisterViewModel();
         model.countries = await _service.GetCountries();
+        model.cosmetics = await _service.GetAvatars();
+
         return View(model);
 
     }
@@ -86,7 +88,7 @@ public class AccountController: Controller
 
         if (model.country_id != null)
         {
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Profile", "Home");
         }
 
         return View(model);

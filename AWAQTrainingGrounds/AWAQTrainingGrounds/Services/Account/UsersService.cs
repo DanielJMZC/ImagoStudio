@@ -1,9 +1,11 @@
 using System.Text.Json;
+using AWAQTrainingGrounds.Models;
 
 public class UsersService: IUsersService
 {
     private readonly HttpClient _httpClient;
-     private readonly string _baseURL = "https://127.0.0.1:5550";
+     //private readonly string _baseURL = "https://10.14.255.43:5550";
+    private readonly string _baseURL = "https://127.0.0.1:5550";
 
     public UsersService(HttpClient httpClient)
     {
@@ -100,6 +102,22 @@ public class UsersService: IUsersService
 
         return JsonSerializer.Deserialize<List<Countries>>(json) ?? new List<Countries>();
     
+    }
+
+    public async Task<List<Cosmetic>> GetAvatars()
+    {
+        var url = _baseURL + "/avatars";
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return new List<Cosmetic>();
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<List<Cosmetic>>(json) ?? new List<Cosmetic>();
     }
 
     public async Task<ProfileViewModel> GetProfile(int id)

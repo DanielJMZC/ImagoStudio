@@ -8,6 +8,6 @@ button.addEventListener("click", function() {
         input.value = selected.value;
 
         const profile = document.getElementById("profile")
-        profile.src = `/Images/Account/Avatar${input.value}.png`
+        profile.src = `/Images/Account/character${input.value}portrait.png`
     }
 });

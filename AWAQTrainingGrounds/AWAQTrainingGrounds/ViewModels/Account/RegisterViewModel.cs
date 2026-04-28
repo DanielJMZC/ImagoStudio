@@ -1,3 +1,5 @@
+using AWAQTrainingGrounds.Models;
+
 public class RegisterViewModel
 {
     public int birth_day { get; set; }
@@ -14,4 +16,5 @@ public class RegisterViewModel
     public int? user_id { get; set; }
 
     public List<Countries>? countries {get; set;}
+    public List<Cosmetic>? cosmetics {get; set;}
 }
