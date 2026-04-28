@@ -1,0 +1,25 @@
+@model Users
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg rounded-4" style="width: 100%; max-width: 1100px;">
+        
+        <h4 class="card-header fw-semibold bg-white border-0 rounded-top-4 title-home mt-3">
+            Dashboard
+        </h4>
+        
+        <hr class="divider-green" />
+
+        <div class="card-body p-2">
+            <iframe class="dashboard-frame"
+                src="https://datastudio.google.com/embed/reporting/74ead17c-7f8d-4be0-a337-507e4f6f7e0a/page/ysZwF?params={&quot;user_param&quot;:@Model.user_id}"
+                allowfullscreen
+                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+            </iframe>
+        </div>
+
+    </div>
+</div>

@@ -95,7 +95,7 @@
         </section>
         <section class = "SideBody">
             <div class = "mb-3">
-                <img src="~/Images/Account/Avatar2.png" class = "rounded-circle" id = "profile" width="192" height="192">
+                <img src="@Model.cosmetics?.FirstOrDefault()?.profile_url" class = "rounded-circle" id = "profile" width="192" height="192">
             </div>
             <br />
             <button class="btn btn-outline-light my-btn" type="button" data-bs-toggle="modal" data-bs-target="#profileModal">Editar Perfil</button>
@@ -108,31 +108,17 @@
                         <h1 class="modal-title fs-5" id="profileChooser">Selecciona tu perfil</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <input type="radio" class="btn-check my-input" value="2" name="cosmetic" id="option1" autocomplete="off" checked>
-                        <label class = "btn rounded-circle my-radio" for = "option1">
-                            <img src="~/Images/Account/Avatar2.png" class = "rounded-circle" width="96" height= "96">
+                  <div class="modal-body">
+                    @foreach(var cosmetic in Model.cosmetics.Select((item, i) => new { item, i }))
+                    {
+                        string isChecked = cosmetic.i == 0 ? "checked" : "";
+
+                        <input type="radio" class="btn-check my-input" value="@cosmetic.item.cosmetic_id" name="cosmetic" id="cosmetic@(cosmetic.i)" autocomplete="off" @isChecked>
+                        <label class="btn rounded-circle my-radio" for="cosmetic@(cosmetic.i)">
+                            <img src="@cosmetic.item.profile_url" class="rounded-circle" width="96" height="96">
                         </label>
-
-                        <input type="radio" class="btn-check my-input" value="3" name = "cosmetic" id="option2" autocomplete="off">
-
-                        <label class = "btn rounded-circle my-radio" for = "option2">
-                        <img src="~/Images/Account/Avatar3.png" class = "rounded-circle" width="96" height= "96">
-                        </label>
-
-                        <input type="radio" class="btn-check my-input" value="4" name = "cosmetic" id="option3" autocomplete="off">
-
-                        <label class = "btn rounded-circle my-radio" for = "option3">
-                        <img src="~/Images/Account/Avatar4.png" class = "rounded-circle" width="96" height= "96">
-                        </label>
-
-                        <input type="radio" class="btn-check my-input" value="5" name = "cosmetic" id="option4" autocomplete="off">
-
-                        <label class = "btn rounded-circle my-radio" for = "option4">
-                        <img src="~/Images/Account/Avatar5.png" class = "rounded-circle" width="96" height= "96">
-                        </label>
-
-                    </div>
+                    }
+                </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success " id = "profileSubmit" data-bs-dismiss="modal">Save changes</button>

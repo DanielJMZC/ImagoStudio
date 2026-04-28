@@ -1,3 +1,5 @@
+using AWAQTrainingGrounds.Models;
+
 public interface IUsersService
 {
     Task<Users> AddUser(Users user);
@@ -9,5 +11,6 @@ public interface IUsersService
 
     Task<ProfileViewModel> GetProfile(int id);
 
+    Task<List<Cosmetic>> GetAvatars();
     Task<bool> IsAdmin(int userId);
 }

@@ -34,6 +34,33 @@ public class HomeController : Controller
         return View(model);
     }
 
+    public IActionResult Dashboard()
+    {
+        Users user = new Users();
+        var id_user = HttpContext.Session.GetInt32("user_id");
+        user.user_id = id_user;
+
+        if (!id_user.HasValue || id_user.Value <= 0)
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View(user);
+    }
+
+    public IActionResult Videojuego()
+    {
+     
+        var id_user = HttpContext.Session.GetInt32("user_id");
+   
+        if (!id_user.HasValue || id_user.Value <= 0)
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
