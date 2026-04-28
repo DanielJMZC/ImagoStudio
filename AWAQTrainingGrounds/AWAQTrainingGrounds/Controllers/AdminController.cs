@@ -14,6 +14,7 @@ public class AdminController : Controller
     }
 
 
+    [AdminOnly]
     public async Task<IActionResult> Panel(string busqueda, int pagina = 1)
     {
 
@@ -58,6 +59,7 @@ public class AdminController : Controller
         return View(vm);
     }
 
+    [AdminOnly]
     public async Task<IActionResult> Juego(int npcId = 1)
     {
         var npcData = await _npcService.GetNPCData(npcId);
@@ -86,6 +88,7 @@ public class AdminController : Controller
     }
 
 
+    [AdminOnly]
     public IActionResult Graficas()
     {
         return View();
