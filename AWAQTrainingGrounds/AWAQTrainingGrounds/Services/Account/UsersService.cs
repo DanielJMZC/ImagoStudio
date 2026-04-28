@@ -5,8 +5,8 @@ public class UsersService : IUsersService
 {
     private readonly HttpClient _httpClient;
     
-    //private readonly string _baseURL = "https://10.14.255.43:5550";
-    private readonly string _baseURL = "https://127.0.0.1:5550";
+    private readonly string _baseURL = "https://10.14.255.43:5550";
+    //private readonly string _baseURL = "https://127.0.0.1:5550";
 
     public UsersService(HttpClient httpClient)
     {
@@ -142,7 +142,7 @@ public class UsersService : IUsersService
     public async Task<bool> IsAdmin(int userId)
     {
         var response = await _httpClient.GetFromJsonAsync<IsAdminViewModel>(
-            $"http://localhost:5000/users/is-admin/{userId}"
+            $"http://10.14.255.43:5530/users/is-admin/{userId}"
         );
 
         return response.isAdmin;
