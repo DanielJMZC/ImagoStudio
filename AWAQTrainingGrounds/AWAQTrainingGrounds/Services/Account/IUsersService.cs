@@ -8,4 +8,6 @@ public interface IUsersService
     Task<List<Countries>> GetCountries();
 
     Task<ProfileViewModel> GetProfile(int id);
+
+    Task<bool> IsAdmin(int userId);
 }

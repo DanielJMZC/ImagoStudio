@@ -1,9 +1,9 @@
 using System.Text.Json;
 
-public class UsersService: IUsersService
+public class UsersService : IUsersService
 {
     private readonly HttpClient _httpClient;
-     private readonly string _baseURL = "https://127.0.0.1:5550";
+    private readonly string _baseURL = "https://127.0.0.1:5550";
 
     public UsersService(HttpClient httpClient)
     {
@@ -24,7 +24,7 @@ public class UsersService: IUsersService
             {
                 Users usuario = new Users();
                 usuario.correo = "invalid";
-                return usuario;   
+                return usuario;
             }
 
             return new Users();
@@ -32,11 +32,12 @@ public class UsersService: IUsersService
 
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<Users>(json) ?? new Users();
-       
+
     }
 
     public async Task<Users> LoginUser(Users user)
-    {  var url = _baseURL + "/users/login";
+    {
+        var url = _baseURL + "/users/login";
         var post = JsonSerializer.Serialize(user);
 
         var content = new StringContent(post, System.Text.Encoding.UTF8, "application/json");
@@ -49,7 +50,7 @@ public class UsersService: IUsersService
             {
                 Users usuario = new Users();
                 usuario.correo = "invalid";
-                return usuario;   
+                return usuario;
             }
 
             return new Users();
@@ -57,7 +58,7 @@ public class UsersService: IUsersService
 
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<Users>(json) ?? new Users();
-        
+
     }
 
     public async Task<Users> UpdateUser(RegisterViewModel user)
@@ -78,11 +79,12 @@ public class UsersService: IUsersService
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Users>(json) ?? new Users();
-        } else
+        }
+        else
         {
             return new Users();
         }
-        
+
     }
 
     public async Task<List<Countries>> GetCountries()
@@ -99,7 +101,7 @@ public class UsersService: IUsersService
         var json = await response.Content.ReadAsStringAsync();
 
         return JsonSerializer.Deserialize<List<Countries>>(json) ?? new List<Countries>();
-    
+
     }
 
     public async Task<ProfileViewModel> GetProfile(int id)
@@ -117,4 +119,14 @@ public class UsersService: IUsersService
 
         return JsonSerializer.Deserialize<ProfileViewModel>(json) ?? new ProfileViewModel();
     }
+
+    public async Task<bool> IsAdmin(int userId)
+    {
+        var response = await _httpClient.GetFromJsonAsync<IsAdminViewModel>(
+            $"http://localhost:5000/users/is-admin/{userId}"
+        );
+
+        return response.isAdmin;
+    }
+
 }

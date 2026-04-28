@@ -108,9 +108,13 @@ public class AccountController: Controller
 
         if (user.user_id != null ) {
             Console.WriteLine(user.user_id.ToString());
-            
-            if (user.user_id != null) {
+
+            if (user.user_id != null)
+            {
                 HttpContext.Session.SetInt32("user_id", user.user_id.Value);
+                
+                bool isAdmin = await _service.IsAdmin(user.user_id.Value);
+                HttpContext.Session.SetInt32("is_admin", isAdmin ? 1 : 0);
             }
             
             if (user.country_id != null) {

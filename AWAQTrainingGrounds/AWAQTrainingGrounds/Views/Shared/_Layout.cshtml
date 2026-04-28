@@ -29,7 +29,10 @@
                         <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Tienda" asp-action="Tienda">Tienda</a>
 
 
-                        <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Admin" asp-action="Panel">Panel Admnistrador</a>
+                        @if (Context.Session.GetInt32("is_admin") == 1)
+                        {
+                            <a class="nav-link title-home fw-semibold border-bottom border-2 border-transparent hover-border" asp-area="" asp-controller="Admin" asp-action="Panel">Panel Admnistrador</a>
+                        }
                
                     </div>
                 </div>
