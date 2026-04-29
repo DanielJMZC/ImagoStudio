@@ -12,7 +12,7 @@ public class UsersService : IUsersService
     {
         _httpClient = httpClient;
     }
-    public async Task<Users> AddUser(Users user)
+    public async Task<RegViewModel> AddUser(Users user)
     {
         var url = _baseURL + "/users/register";
         var post = JsonSerializer.Serialize(user);
@@ -25,20 +25,30 @@ public class UsersService : IUsersService
         {
             if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
-                Users usuario = new Users();
-                usuario.correo = "invalid";
-                return usuario;
+                return new RegViewModel
+                {
+                    user = new Users(),
+                    message = "invalid"
+                };
             }
 
-            return new Users();
+            return new RegViewModel
+            {
+                user = new Users(),
+                message = "error"
+            };
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<Users>(json) ?? new Users();
 
+        return new RegViewModel
+        {
+            user = JsonSerializer.Deserialize<Users>(json) ?? new Users(),
+            message = "success"
+        };
     }
 
-    public async Task<Users> LoginUser(Users user)
+    public async Task<LoginViewModel> LoginUser(Users user)
     {
         var url = _baseURL + "/users/login";
         var post = JsonSerializer.Serialize(user);
@@ -51,17 +61,27 @@ public class UsersService : IUsersService
         {
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                Users usuario = new Users();
-                usuario.correo = "invalid";
-                return usuario;
+                return new LoginViewModel
+                {
+                    user = new Users(),
+                    message = "invalid"
+                };
             }
 
-            return new Users();
+            return new LoginViewModel
+            {
+                user = new Users(),
+                message = "error"
+            };
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<Users>(json) ?? new Users();
 
+        return new LoginViewModel
+        {
+            user = JsonSerializer.Deserialize<Users>(json) ?? new Users(),
+            message = "success"
+        };
     }
 
     public async Task<Users> UpdateUser(RegisterViewModel user)
