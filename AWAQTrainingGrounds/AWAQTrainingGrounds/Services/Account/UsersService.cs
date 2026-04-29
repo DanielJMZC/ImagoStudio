@@ -163,6 +163,7 @@ public class UsersService : IUsersService
     {
         var response = await _httpClient.GetFromJsonAsync<IsAdminViewModel>(
             $"http://10.14.255.43:5530/users/is-admin/{userId}"
+            //$"http://127.0.0.1:5530/users/is-admin/{userId}"
         );
 
         return response.isAdmin;

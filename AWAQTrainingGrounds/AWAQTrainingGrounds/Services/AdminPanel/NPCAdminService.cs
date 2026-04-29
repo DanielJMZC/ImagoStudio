@@ -8,7 +8,7 @@ public class NPCAdminService : INPCAdminService
 {
     private readonly HttpClient _httpClient;
 
-    //private readonly string baseUrl = "http://127.0.0.1:5000/npc/";
+    //private readonly string baseUrl = "http://127.0.0.1:5530/npc/";
     private readonly string baseUrl = "https://10.14.255.43:5530/npc/";
 
     public NPCAdminService(HttpClient httpClient)

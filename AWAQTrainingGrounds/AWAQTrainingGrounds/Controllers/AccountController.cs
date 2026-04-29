@@ -112,8 +112,14 @@ public class AccountController: Controller
         {
             HttpContext.Session.SetInt32("user_id", loggedUser.user_id.Value);
 
-            //bool isAdmin = await _service.IsAdmin(loggedUser.user_id.Value);
-            //HttpContext.Session.SetInt32("is_admin", isAdmin ? 1 : 0);
+            bool isAdmin = await _service.IsAdmin(loggedUser.user_id.Value);
+            HttpContext.Session.SetInt32("is_admin", isAdmin ? 1 : 0);
+
+            // 🔥 PRIORIDAD ADMIN
+            if (isAdmin)
+            {
+                return RedirectToAction("Panel", "Admin");
+            }
 
             if (loggedUser.country_id != null)
             {

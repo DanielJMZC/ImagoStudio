@@ -86,7 +86,7 @@
                         </div>
                 </div>
         
-                <input type="hidden" name="cosmetic_id" id = "profileInput" value="2">
+                <input type="hidden" name="cosmetic_id" id = "profileInput" value="@Model.cosmetics?.FirstOrDefault()?.cosmetic_id">
                 <br />
                 <div class="d-grid gap-2 col-10 mx-auto">
                     <button class="btn btn-primary my-submit-button" type="submit">Completar</button>

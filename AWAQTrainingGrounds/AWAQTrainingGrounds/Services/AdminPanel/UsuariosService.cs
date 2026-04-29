@@ -11,7 +11,8 @@ public class UsuariosService : IUsuariosService
 
     public async Task<UsuariosResponseViewModel> GetUsuarios(int page, int pageSize, string search)
     {
-        var url = $"https://10.14.255.43:5530/users/summary?page={page}&pageSize={pageSize}&search={search}";
+        var url = $"http://10.14.255.43:5530/users/summary?page={page}&pageSize={pageSize}&search={search}";
+        //var url = $"http://127.0.0.1:5530/users/summary?page={page}&pageSize={pageSize}&search={search}";
         
         var response = await _httpClient.GetFromJsonAsync<UsuariosResponseViewModel>(url);
 
@@ -20,7 +21,8 @@ public class UsuariosService : IUsuariosService
 
     public async Task<EstadisticasViewModel> GetEstadisticas()
     {
-        var response = await _httpClient.GetFromJsonAsync<EstadisticasViewModel>("http://127.0.0.1:5000/users/stats");
+        var response = await _httpClient.GetFromJsonAsync<EstadisticasViewModel>("http://10.14.255.43:5530/users/stats");
+        //var response = await _httpClient.GetFromJsonAsync<EstadisticasViewModel>("http://127.0.0.1:5530/users/stats");
 
         return response;
     }
