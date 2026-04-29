@@ -121,12 +121,14 @@ public class AccountController: Controller
             }
             else
             {
-                return RedirectToAction("RegisterProfile");
+                return RedirectToAction("Panel", "Admin");
             }
-        }
 
         return View(user);
     }
+
+    return View();
+}
 
    
 }
