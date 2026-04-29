@@ -2,8 +2,8 @@ using AWAQTrainingGrounds.Models;
 
 public interface IUsersService
 {
-    Task<Users> AddUser(Users user);
-    Task<Users> LoginUser(Users user);
+    Task<RegViewModel> AddUser(Users user);
+    Task<LoginViewModel> LoginUser(Users user);
 
     Task<Users> UpdateUser(RegisterViewModel users);
 

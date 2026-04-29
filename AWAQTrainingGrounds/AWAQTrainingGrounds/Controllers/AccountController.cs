@@ -45,24 +45,22 @@ public class AccountController: Controller
     [HttpPost]
     public async Task<IActionResult> Register(Users user)
     {
-        user = await _service.AddUser(user);
+        var result = await _service.AddUser(user);
 
-        if (user.correo == "invalid")
+        if (result.message == "invalid")
         {
             ModelState.AddModelError("correo", "El correo electrónico debe ser único");
             return View(user);
         }
 
-        if (user.user_id != null) {
-            Console.WriteLine(user.user_id.ToString());
-            if (user.user_id != null) {
-                HttpContext.Session.SetInt32("user_id", user.user_id.Value);
-            }
+        if (result.user.user_id != null)
+        {
+            HttpContext.Session.SetInt32("user_id", result.user.user_id.Value);
 
             return RedirectToAction("RegisterProfile");
         }
 
-            return View();
+        return View(user);
     }
 
     [HttpPost]
@@ -96,40 +94,37 @@ public class AccountController: Controller
     }
     
 
-    [HttpPost]
-public async Task<IActionResult> Login(Users user)
-{
-    user = await _service.LoginUser(user);
-
-    if (user.correo == "invalid")
+   [HttpPost]
+    public async Task<IActionResult> Login(Users user)
     {
-        ModelState.AddModelError("correo", "Credenciales inválidas");
-        ModelState.AddModelError("encrypted_password", "Credenciales inválidas");
-        return View(user);
-    }
+        var result = await _service.LoginUser(user);
 
-    if (user.user_id != null)
-    {
-        HttpContext.Session.SetInt32("user_id", user.user_id.Value);
+        if (result.message == "invalid")
+        {
+            ModelState.AddModelError("correo", "Credenciales inválidas");
+            ModelState.AddModelError("encrypted_password", "Credenciales inválidas");
+            return View(user);
+        }
 
-        bool isAdmin = await _service.IsAdmin(user.user_id.Value);
-        HttpContext.Session.SetInt32("is_admin", isAdmin ? 1 : 0);
+        var loggedUser = result.user;
 
+        if (loggedUser.user_id != null)
+        {
+            HttpContext.Session.SetInt32("user_id", loggedUser.user_id.Value);
 
-            if (isAdmin)
+            //bool isAdmin = await _service.IsAdmin(loggedUser.user_id.Value);
+            //HttpContext.Session.SetInt32("is_admin", isAdmin ? 1 : 0);
+
+            if (loggedUser.country_id != null)
+            {
+                return RedirectToAction("Profile", "Home");
+            }
+            else
             {
                 return RedirectToAction("Panel", "Admin");
             }
 
-   
-        if (user.country_id != null)
-        {
-            return RedirectToAction("Profile", "Home");
-        }
-        else
-        {
-            return RedirectToAction("RegisterProfile");
-        }
+        return View(user);
     }
 
     return View();
